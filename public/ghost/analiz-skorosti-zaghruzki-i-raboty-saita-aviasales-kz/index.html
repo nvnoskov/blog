@@ -1,0 +1,152 @@
+	
+	<!doctype html>
+<html lang="en">
+  <head>
+    <title>ALEXFINN - Анализ скорости загрузки и работы сайта Aviasales.kz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    
+    <link href="/css/milk.min.css" rel="stylesheet">
+    <link href="/css/milk-responsive.min.css" rel="stylesheet">     
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="shortcut icon" href="/images/alexfinn.ico">
+    <link rel="apple-touch-icon" href="">
+    <link rel="canonical" href="http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/">
+
+    
+    <link href="/rss.xml" type="application/atom+xml" rel="alternate" title="My New Hugo Site">
+
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+  <div id="navbar-inner">
+    <div id="logo">
+       <a href=""><img src="/images/letter-a.png" width="100px"></img></a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="posts">
+
+
+	    
+	  <div class="post">
+	    <header class="post-header">
+	        <h1><a href="/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/">Анализ скорости загрузки и работы сайта Aviasales.kz</a></h1>
+	        <div class="post-time">August 10 2015</div>
+	    </header>
+	    <div class="post-after">
+	        <div class="tags">
+	            
+	                <a href="http://example.org//tags/%D0%BC%D0%B5%D1%82%D0%B5%D0%BE%D1%80">Метеор</a>
+	            
+	                <a href="http://example.org//tags/%D1%81%D0%BA%D0%BE%D1%80%D0%BE%D1%81%D1%82%D1%8C">Скорость</a>
+	            
+	        </div>
+	    </div>
+	    <hr>
+	    <div class="post content">
+	        
+
+<p>Следующий на очереди Aviasales.kz, с показателем firstPaint в 685мс.</p>
+
+<h2 id="основные-показатели">Основные показатели</h2>
+
+<p><img src="/images/2015/08/screen_012.png" alt="" /></p>
+
+<h2 id="загрузка-документа">Загрузка документа</h2>
+
+<p>Общий объём документа в 589Кб (в 4 раза меньше чем сайт bekair.com), обеспечивает быструю загрузку даже на скорости 1Мбит/сек. Сайт полностью грузится за 3.75 секунды.
+<img src="/images/2015/08/screen_013.png" alt="" /></p>
+
+<p>Минусом является тот факт, что проект расположен где то в Великобритании. Вследствие этого увеличивается пинг (~120мс) и, соответственно, время ожидания получения данных (TTFB в среднем около 250мс).</p>
+
+<h2 id="блокирующие-загрузки">Блокирующие загрузки</h2>
+
+<p>Все файлы в секции HEAD блокируют отображение страницы до момента их полной загрузки.
+Крайне необходимо сокращать количество подобных ресурсов.
+&gt;Скрипты необходимо выносить в нижнюю часть документа, это никак не сказывается на их функциональности.</p>
+
+<p>Единственным положительным моментов в данной картине является то, что часть этих ресурсов скачивается с <a href="https://tech.yandex.ru/jslibs/">CDN-Yandex</a>.
+Это позволяет выполнять их загрузку параллельно с другими ресурсами, да и средний TTFB в 60мс здесь играет роль.
+<img src="/images/2015/08/screen_014.png" alt="" /></p>
+
+<h2 id="timeline">Timeline</h2>
+
+<p><img src="/images/2015/08/screen_015.png" alt="" />
+На данном скриншоте изображены 7 секунд просмотра уже загруженного сайта. Желтые столбики это вызовы функций, зелёные это процессы прорисовки страницы. Частью этих вызовов и причиной постоянной прорисовки страницы является бегущая строка &ldquo;Сейчас ищут:&ldquo;. Её анимация реализована при помощи функции JQuery Animate. Почему в современных браузерах этого делать не стоит,  очень хорошо описал <a href="http://paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/">Paul Irish</a></p>
+
+<pre><code class="language-JS">var r = function() {
+    t.animate({
+        left: &quot;-&quot; + e + &quot;px&quot;
+    }, 300 * e / 5, function() {
+        t.css({
+            left: &quot;0px&quot;
+        });
+        r()
+    })
+};
+r();
+</code></pre>
+
+<p>Большая половина вызовов JS-функций принадлежит <a href="https://old.metrika.yandex.ru/promo/webvisor/">Yandex Webvisor</a>, записывающей действия вашего пользователя на сайте.
+Нужно учитывать её наличие, если вы собираетесь добиваться <strong>60FPS</strong>.</p>
+
+<h2 id="вывод">Вывод</h2>
+
+<p>Нужно сокращать количество блокирующих ресурсов в секции HEAD, и если основная аудитория сайта из Казахстана, то переносить его поближе, на хостинговые площадки Казахстана или России.</p>
+
+<h2 id="почитать-ещё">Почитать ещё</h2>
+
+<ul>
+<li><a href="http://blog.vesna.kz/meteor-shop-skorost-pochiemu-ona-vazhna/">Скорость загрузки и работы сайта- почему она важна</a></li>
+<li><a href="http://blog.vesna.kz/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/">Анализ скорости загрузки и работы сайта Aviasales.kz</a></li>
+</ul>
+
+	    </div>
+	    
+	<div class="about">
+	<p> 
+     
+    </p>
+</div>
+		<nav id="pagination">
+			<a class="prev" href="http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-sta-kz/">Prev</a>
+			<a class="next" href="http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/">Next</a>
+		</nav>
+	
+		        <footer>
+		        	Built with <a href="https://github.com/spf13/hugo">Hugo</a>
+		        	<p>© Alexander Feller 2018</p>
+		        </footer>
+		    </div>
+		  </div>
+		</div>
+      </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + ":change-me";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 4]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="http://change-me" style="border:0;" alt="" /></p></noscript>
+
+
+</html>
+

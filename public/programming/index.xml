@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Programmings on My New Hugo Site</title>
+    <link>http://example.org/programming/</link>
+    <description>Recent content in Programmings on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 07 Nov 2016 14:50:10 +0600</lastBuildDate>
+    
+	<atom:link href="http://example.org/programming/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker Golang и все все все</title>
+      <link>http://example.org/programming/docker-go/</link>
+      <pubDate>Mon, 07 Nov 2016 14:50:10 +0600</pubDate>
+      
+      <guid>http://example.org/programming/docker-go/</guid>
+      <description>Контейнеризация Go Самым удивительным фактов при сборке образов для запуска программ на Go, был их размер. Озаботившись этой задачей я стал искать информацию по минификации образов, и нашёл отличную статью Building minimal docker containers for go applications</description>
+    </item>
+    
+    <item>
+      <title>redux</title>
+      <link>http://example.org/programming/redux/</link>
+      <pubDate>Wed, 06 Apr 2016 09:50:54 +0600</pubDate>
+      
+      <guid>http://example.org/programming/redux/</guid>
+      <description>Команды mkdir kursapp cd kursapp/ mkdir client server common static npm init npm i --save react react-dom axios react-router redux react-redux express redux-thunk react-router-redux npm i --save-dev webpack webpack-dev-server babel-{core,loader,register,preset-react,preset-stage-0,preset-es2015} react-hot-loader echo &#39;{&amp;quot;presets&amp;quot;:[&amp;quot;es2015&amp;quot;,&amp;quot;react&amp;quot;,&amp;quot;stage-0&amp;quot;]}&#39; &amp;gt; .babelrc  webpack.dev.config.js var webpack = require(&#39;webpack&#39;) module.exports = { entry: [ &#39;webpack-dev-server/client?http://127.0.0.1:8282/&#39;, &#39;webpack/hot/only-dev-server&#39;, &#39;./client/index&#39; ], output: { filename: &#39;static/bundle.js&#39; }, module:{ loaders:[ { test: /\.jsx?$/, exclude: /node_modules/, loaders:[ &amp;quot;react-hot&amp;quot;, &amp;quot;babel&amp;quot; ] } ] }, plugins:[ new webpack.</description>
+    </item>
+    
+    <item>
+      <title>Сравнение производительности RethinkDB на NodeJS и Go</title>
+      <link>http://example.org/programming/compare-rethinkdb-nodejs-golang/</link>
+      <pubDate>Thu, 24 Mar 2016 14:35:08 +0600</pubDate>
+      
+      <guid>http://example.org/programming/compare-rethinkdb-nodejs-golang/</guid>
+      <description>Выбор платформы для работы RethinkDB Твёрдо решив что всё таки стоит попробовать использовать RethinkDB в качестве базы данных, я задался какой же платформой воспользоваться для создания REST API.
+Раннее я сравнивал RethinkDB c Mysql на различных платформах. Тест был тривиален и содержал лишь в себе инициацию соединения с БД и один запрос на выборку данных.
+ NodeJS или Go На графике понятно только одно, что &amp;ldquo;только не PHP&amp;rdquo;. Хотя PHP7 весьма неплох.</description>
+    </item>
+    
+    <item>
+      <title>Перевод проекта из кодировки CP1251 в UTF-8</title>
+      <link>http://example.org/programming/cp1251_to_utf8/</link>
+      <pubDate>Tue, 09 Feb 2016 18:47:02 +0600</pubDate>
+      
+      <guid>http://example.org/programming/cp1251_to_utf8/</guid>
+      <description>Кодовая база проекта Можно воспользоваться таким вариантом в виде &amp;ldquo;почти одной&amp;rdquo; команды.
+for FILE in $(find /project -name &#39;*.php&#39;); do mv $FILE{,.orig} &amp;amp;&amp;amp; iconv -f CP1251 -t UTF-8 $FILE.orig -o $FILE; done  Или можно использовать простой BASH-скрипт
+#!/bin/bash # Рекурсивная конвертация windows-1251 --&amp;gt; utf-8 # Напримере файлов *.php, *.html, *.css, *.js. find ./project -name &amp;quot;*.php&amp;quot; -o -name &amp;quot;*.html&amp;quot; -o -name &amp;quot;*.css&amp;quot; -o -name &amp;quot;*.js&amp;quot; -type f | while read file do echo &amp;quot; $file&amp;quot; mv $file $file.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1016 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>My New Hugo Site on My New Hugo Site </title>
+    <link>http://example.org/</link>
+    <language>en-us</language>
+    <author>Alexander Ivanov</author>
+    <updated>2016-11-07 14:50:10 &#43;0600 &#43;0600</updated>
+    
+    <item>
+      <title>Docker Golang и все все все</title>
+      <link>http://example.org/programming/docker-go/</link>
+      <pubDate>Mon, 07 Nov 2016 14:50:10 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/programming/docker-go/</guid>
+      <description>
+
+&lt;h3 id=&#34;контейнеризация-go&#34;&gt;Контейнеризация Go&lt;/h3&gt;
+
+&lt;p&gt;Самым удивительным фактов при сборке образов для запуска программ на Go, был их размер.
+Озаботившись этой задачей я стал искать информацию по минификации образов, и нашёл отличную статью
+&lt;a href=&#34;https://blog.codeship.com/building-minimal-docker-containers-for-go-applications&#34;&gt;Building minimal docker containers for go applications&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>redux</title>
+      <link>http://example.org/programming/redux/</link>
+      <pubDate>Wed, 06 Apr 2016 09:50:54 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/programming/redux/</guid>
+      <description>
+
+&lt;h3 id=&#34;команды&#34;&gt;Команды&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir kursapp
+cd kursapp/
+mkdir client server common static
+npm init
+npm i --save react react-dom axios react-router redux react-redux express redux-thunk react-router-redux
+npm i --save-dev webpack webpack-dev-server babel-{core,loader,register,preset-react,preset-stage-0,preset-es2015} react-hot-loader
+echo &#39;{&amp;quot;presets&amp;quot;:[&amp;quot;es2015&amp;quot;,&amp;quot;react&amp;quot;,&amp;quot;stage-0&amp;quot;]}&#39; &amp;gt; .babelrc
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;webpack-dev-config-js&#34;&gt;webpack.dev.config.js&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;var webpack = require(&#39;webpack&#39;)
+
+module.exports = {
+    entry: [
+        &#39;webpack-dev-server/client?http://127.0.0.1:8282/&#39;,
+        &#39;webpack/hot/only-dev-server&#39;,
+        &#39;./client/index&#39;
+    ],
+    output: {
+        filename: &#39;static/bundle.js&#39;
+    },
+    module:{
+        loaders:[
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loaders:[
+                    &amp;quot;react-hot&amp;quot;,
+                    &amp;quot;babel&amp;quot;
+                ]
+            }
+        ]
+    },
+    plugins:[
+        new webpack.HotModuleReplacementPlugin(),
+    ]
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Сравнение производительности RethinkDB на NodeJS и Go</title>
+      <link>http://example.org/programming/compare-rethinkdb-nodejs-golang/</link>
+      <pubDate>Thu, 24 Mar 2016 14:35:08 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/programming/compare-rethinkdb-nodejs-golang/</guid>
+      <description>
+
+&lt;h2 id=&#34;выбор-платформы-для-работы-rethinkdb&#34;&gt;Выбор платформы для работы RethinkDB&lt;/h2&gt;
+
+&lt;p&gt;Твёрдо решив что всё таки стоит попробовать использовать RethinkDB в качестве базы данных, я задался какой же платформой воспользоваться для  создания REST API.&lt;/p&gt;
+
+&lt;p&gt;Раннее я &lt;a href=&#34;http://example.org/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/&#34;&gt;сравнивал&lt;/a&gt; RethinkDB c Mysql на различных платформах.
+Тест был тривиален и содержал лишь в себе инициацию соединения с БД и один запрос на выборку данных.&lt;/p&gt;
+
+&lt;iframe width=&#34;700&#34; height=&#34;400&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/16j_2VuqbnnF04v929XTceJ9vHRksOSFOVBx7B7rjVJ8/pubchart?oid=1205557003&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;
+
+&lt;h2 id=&#34;nodejs-или-go&#34;&gt;NodeJS или Go&lt;/h2&gt;
+
+&lt;p&gt;На графике понятно только одно, что &amp;ldquo;только не PHP&amp;rdquo;. Хотя PHP7 весьма неплох.&lt;/p&gt;
+
+&lt;p&gt;Теперь пора провести более серьёзный тест на вставку, выборку и удаление данных. За основу я возьму архив изменений валютного курса с &lt;a href=&#34;http://kurs.kz&#34;&gt;kurs.kz&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;В файле имеются 4114 значений такого вида.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[{
+    &amp;quot;id&amp;quot;: &amp;quot;2&amp;quot;,
+    &amp;quot;newdate&amp;quot;: &amp;quot;1095206400&amp;quot;,
+    &amp;quot;usd_buy&amp;quot;: &amp;quot;135.4500&amp;quot;,
+    &amp;quot;usd_sell&amp;quot;: &amp;quot;135.9500&amp;quot;,
+    &amp;quot;eur_buy&amp;quot;: &amp;quot;165.2500&amp;quot;,
+    &amp;quot;eur_sell&amp;quot;: &amp;quot;166.8500&amp;quot;,
+    &amp;quot;rur_buy&amp;quot;: &amp;quot;4.6000&amp;quot;,
+    &amp;quot;rur_sell&amp;quot;: &amp;quot;4.6500&amp;quot;
+},
+... ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;nodejs&#34;&gt;NodeJS&lt;/h2&gt;
+
+&lt;h3 id=&#34;nodejs-множественная-вставка-bulk-insert&#34;&gt;NodeJS множественная вставка (bulk insert)&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;time curl localhost:3000/insert
+
+real    0m0.811s
+user    0m0.004s
+sys 0m0.004s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;nodejs-выборка&#34;&gt;NodeJS выборка&lt;/h3&gt;
+
+&lt;h4 id=&#34;без-обработки-результатов&#34;&gt;Без обработки результатов&lt;/h4&gt;
+
+&lt;p&gt;Т.е первый отклик системы после запроса&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;r.table(&#39;archive&#39;).run(conn, function(err, res){
+  if(err) throw err;
+  response.end();
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;time curl localhost:3000/select
+
+real    0m0.077s
+user    0m0.008s
+sys 0m0.000s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;с-обработкой-результатов-toarray&#34;&gt;С обработкой результатов (toArray)&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;r.table(&#39;archive&#39;).run(conn, function(err, res){
+    if(err) throw err;
+    res.toArray(function(err, data){
+        console.log(err,data.length)
+        response.end();
+    });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;time curl localhost:3000/select
+
+real    0m0.201s
+user    0m0.004s
+sys 0m0.004s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;nodejs-массовое-удаление&#34;&gt;NodeJS массовое удаление&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;r.table(&#39;archive&#39;).delete()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;time curl localhost:3000/delete
+
+real    0m0.236s
+user    0m0.004s
+sys 0m0.004s
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;nodejs-построчное-удаление&#34;&gt;NodeJS построчное удаление&lt;/h3&gt;
+
+&lt;p&gt;Здесь уже простым замером времени выполнения запроса не выйдет, так как тут множество асинхронных запросов (4114 шт.).
+Потому такой &amp;ldquo;костыль&amp;rdquo;.
+(И да я не учитываю время фактического выполнения команды на удаление, лишь сколько занимает &amp;ldquo;прокрутка&amp;rdquo; всех данных и запрос на их удаление.)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;res.each(function(err, row){
+    r.table(&#39;archive&#39;).get(row.id).delete().run(conn);
+}, function(){
+    console.log(+new Date()-start); // Завершение  выборки
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;==&amp;gt;  780 ms
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;go&#34;&gt;Go&lt;/h2&gt;
+
+&lt;h3 id=&#34;go-множественная-вставка-bulk-insert&#34;&gt;Go множественная вставка (bulk insert)&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;r.DB(&amp;quot;test&amp;quot;).Table(&amp;quot;archive&amp;quot;).Insert(archives).Run(session)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[GIN] 2016/03/25 - 11:45:29 | 200 |  482.971048ms | 127.0.0.1 |   GET     /index
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;go-выборка-с-приведением-к-интерфейсам-массиву&#34;&gt;Go выборка с приведением к интерфейсам (массиву)&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;rows, err := r.DB(&amp;quot;test&amp;quot;).Table(&amp;quot;archive&amp;quot;).Run(session)
+if err != nil { fmt.Println(err)}
+var selectedArchives []Archive
+errParse := rows.All(&amp;amp;selectedArchives)
+if errParse != nil { fmt.Printf(&amp;quot;Error scanning database result: %s&amp;quot;, errParse) }
+fmt.Printf(&amp;quot;%d selectedArchives&amp;quot;, len(selectedArchives))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[GIN] 2016/03/25 - 11:51:12 | 200 |  210.791357ms | 127.0.0.1 |   GET     /select
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;go-массовое-удаление&#34;&gt;Go массовое удаление&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;r.DB(&amp;quot;test&amp;quot;).Table(&amp;quot;archive&amp;quot;).Delete().Run(session)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[GIN] 2016/03/25 - 11:47:22 | 200 |  157.572104ms | 127.0.0.1 |   GET     /delete
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;результаты&#34;&gt;Результаты&lt;/h2&gt;
+
+&lt;p&gt;Они весьма равные. Мне казалось что Go победит с большим отрывом.
+&lt;iframe width=&#34;600&#34; height=&#34;371&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1_RvFqRXL4pn2f6czZmjbU_B8gI3hG4HqWhApM79y6Zg/pubchart?oid=1150232941&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-s&#34;&gt;P.S&lt;/h2&gt;
+
+&lt;p&gt;Тесты проводились на машине AMD FX-8320E x 8, 16Gb&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Перевод проекта из кодировки CP1251 в UTF-8</title>
+      <link>http://example.org/programming/cp1251_to_utf8/</link>
+      <pubDate>Tue, 09 Feb 2016 18:47:02 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/programming/cp1251_to_utf8/</guid>
+      <description>
+
+&lt;h2 id=&#34;кодовая-база-проекта&#34;&gt;Кодовая база проекта&lt;/h2&gt;
+
+&lt;p&gt;Можно воспользоваться таким вариантом в виде &amp;ldquo;почти одной&amp;rdquo; команды.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;for FILE in $(find /project -name &#39;*.php&#39;); 
+	do mv $FILE{,.orig} &amp;amp;&amp;amp; iconv -f CP1251 -t UTF-8 $FILE.orig -o $FILE; 
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Или можно использовать простой BASH-скрипт&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash
+
+# Рекурсивная конвертация windows-1251 --&amp;gt; utf-8
+# Напримере файлов *.php, *.html, *.css, *.js.
+
+find ./project -name &amp;quot;*.php&amp;quot; -o -name &amp;quot;*.html&amp;quot; -o -name &amp;quot;*.css&amp;quot; -o -name &amp;quot;*.js&amp;quot;  -type f |
+while read file
+do
+  echo &amp;quot; $file&amp;quot;
+  mv $file $file.icv
+  iconv -f WINDOWS-1251 -t UTF-8 $file.icv &amp;gt; $file
+  rm -f $file.icv
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;база-данных-mysql&#34;&gt;База данных (Mysql)&lt;/h2&gt;
+
+&lt;p&gt;Тут особенностей гораздо больше. Приведу пример который подошёл для меня.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mysqldump -u user -p password database_cp1251 &amp;gt; dump_cp1251.sql
+sed &#39;s/cp1251/utf8/g&#39; dump_cp1251.sql &amp;gt; dump_utf8.sql
+mysql -u user -p password database_utf8 &amp;lt; dump_utf8.sql
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Есть вариант возникновения ошибки &lt;strong&gt;#1071 - Specified key was too long; max key length is 1000 bytes&lt;/strong&gt;.
+Фиксится удалением текстовых ключей проблемной таблицы.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Agile, Scrum и все все все...</title>
+      <link>http://example.org/vesna/agile/</link>
+      <pubDate>Mon, 08 Feb 2016 12:26:23 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/vesna/agile/</guid>
+      <description>
+
+&lt;h2 id=&#34;agile-в-весне&#34;&gt;Agile в &amp;ldquo;Весне&amp;rdquo;&lt;/h2&gt;
+
+&lt;p&gt;Однажды, собравшись с духом, мы решили что пора внедрять гибкие методологии в разработку проектов.
+Это был уже далёкий 2011-й год.&lt;/p&gt;
+
+&lt;p&gt;Я даже выступал на конференции IMIX в надежде популяризировать идёю использования её в других компаниях, а так же рассказать подробнее о ней для потенциальных заказчиков. (&lt;a href=&#34;http://example.org/images/agile-scrum-vesna.pdf&#34;&gt;Презентация на IMIX 2011&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;Прошло уже 5 лет с тех пор, а внедрить &lt;strong&gt;scrum&lt;/strong&gt; в разработку сайтов так и не вышло. И причин тому несколько.&lt;/p&gt;
+
+&lt;p&gt;Я не буду вдаваться в тонкости &lt;strong&gt;scrum&lt;/strong&gt;-а, хочу лишь поделиться некоторыми наблюдениями из личной практики.
+Коснусь с основном командного фактора.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Внедрять &lt;strong&gt;scrum&lt;/strong&gt; в разработку сайтов изначально было авантюрой, но хотелось новых шагов и свершений.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;сложности-внедрения-scrum&#34;&gt;Сложности внедрения Scrum&lt;/h2&gt;
+
+&lt;p&gt;Первое и пожалуй самое главное это то, что &lt;strong&gt;scrum&lt;/strong&gt; невозможно навязать команде.
+Команда должна сама захотеть и внедрить &lt;strong&gt;scrum&lt;/strong&gt; в свой &amp;ldquo;разработческий быт&amp;rdquo;, нужно лишь всячески помогать и культивировать интерес.&lt;/p&gt;
+
+&lt;p&gt;Scrum называют методологией управления проектами, что подразумевает что это метод для управления проектами. &lt;em&gt;Примени её к своей команде и она будет работать&lt;/em&gt;. Я бы назвал scrum &lt;strong&gt;&lt;em&gt;состоянием команды&lt;/em&gt;&lt;/strong&gt;, команда либо работает в режиме scrum-а, либо противится ему.&lt;/p&gt;
+
+&lt;p&gt;Пять лет назад я с оптимизмом смотрел вперёд и был готов слепо идти напролов внедряя &lt;strong&gt;Scrum&lt;/strong&gt;.
+Но сейчас я пожалуй прокомментирую слайд из презентации с положительными сторонами &lt;strong&gt;Scrum&lt;/strong&gt;-а. (плохих я тогда не видел)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Вовлечённость команды &amp;ndash; &lt;strong&gt;&lt;em&gt;вовлечь просто, сложно не потерять интерес&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Рост команды &amp;ndash; &lt;strong&gt;&lt;em&gt;Рост обусловлен свободой выбора, убери свободу выбора и все усилия сойдёт на нет&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Скорость реализации &amp;ndash; &lt;strong&gt;&lt;em&gt;И да и нет. Обсуждение задач позволяет реализовывать более фундаментальные части (MVP) но обычно принцип &amp;ldquo;ну работает же&amp;rdquo; когда забыли предусмотреть что то на будущее только вредит и отдаляет членов команды&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Поток идей &amp;ndash; &lt;strong&gt;&lt;em&gt;Да, в самом начале. Позже лишь при условии личных интересов к проеку (самореализация, амбиции и прочее)&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Быстрое реагирование на изменения &amp;ndash; &lt;strong&gt;&lt;em&gt;Казалось бы это основное преимущество scrum-а, но не тут то было. Без чёткого и выдержанного плана только расшатывает и дёргает команду в сторону распыляя её эффективность&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;программист&#34;&gt;Программист&lt;/h3&gt;
+
+&lt;p&gt;Я программист чёрт побери!&lt;/p&gt;
+
+&lt;p&gt;Я наблюдал как сложные задачи оценённые первоначально на пару дней или недель, реализовывались за пару часов.
+Так и простые задачи оценённые в несколько дней, растягивались на пару месяцев.
+(можно соотнести с принципом Парето, но тут скорее великой рандом и ктулху)&lt;/p&gt;
+
+&lt;p&gt;Я всегда искал способы продлить эффективное состояние программиста, которое я называю &amp;ldquo;волной&amp;rdquo;.
+По своей сути оно складывается из череды &amp;ldquo;побед&amp;rdquo; над собой, своим кодом и проектом в целом.&lt;/p&gt;
+
+&lt;p&gt;Scrum создан для того чтобы команда побеждала задачи и фичи, изучала сама себя и свои силы. И конечно же совершенствовала их.&lt;/p&gt;
+
+&lt;p&gt;Внедрить ли новую технологию, это всегда намерение программиста, чем выверенное бизнес решение.
+Будет ли оно эффективным покажет время, а то что сейчас оно даст стимул команде и новый виток проекту это неоспоримый факт.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Всё изложенное основано на личных наблюдениях.
+Если коснуться неэффективных решений подобного плана, то одно из 10 решений вызывает проблемы в будущем, и требует полного возврата на предыдущий шаг.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;эксперимент-для-коллег&#34;&gt;Эксперимент для коллег&lt;/h2&gt;
+
+&lt;p&gt;Помимо программиста, я ещё и &amp;ldquo;менеджер&amp;rdquo;. (&lt;em&gt;Порой я сражаюсь сам с собой :)&lt;/em&gt;)
+Предлагаю коллегам по цеху и всем причастным к управлению проектами, проведите эксперимент со своими программистами.&lt;/p&gt;
+
+&lt;p&gt;Нужно спросить у программиста следующее:&lt;/p&gt;
+
+&lt;p&gt;&amp;ndash; Что было бы интереснее(эффективнее, быстрее и др.) реализовать?&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Сделать такой же проект над которым он работает(работал ранее) (точную копию, только повторно с нуля)?&lt;/li&gt;
+&lt;li&gt;Сделать такой же проект над которым он работает(работал ранее), но применив новую технологию (Новые базы данных, языки программирования, фреймфорки и т.д)?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;(Нужно знать текущие тренды в разработке, либо предложить ему выбрать самому)&lt;/p&gt;
+
+&lt;p&gt;Возможно это довольно очевидно, но лишним увидеть его реакцию думаю не будет.&lt;/p&gt;
+
+&lt;h2 id=&#34;заключение&#34;&gt;Заключение&lt;/h2&gt;
+
+&lt;p&gt;Scrum - при должном внимании к деталям крайне эффективный подход к разработке.&lt;/p&gt;
+
+&lt;p&gt;На своих личных проектах я бы выбрал его не раздумывая.&lt;/p&gt;
+
+&lt;p&gt;Но если вы работаете на массовое производство (сайты, дизайн и прочее), даже не думайте. Вы потеряете кучу времени, сражаясь с заказчиком и командой на двух фронтах.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Новый блог на HUGO</title>
+      <link>http://example.org/vesna/new-blog/</link>
+      <pubDate>Tue, 02 Feb 2016 21:01:35 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/vesna/new-blog/</guid>
+      <description>
+
+&lt;h3 id=&#34;go-и-путь-gopher-а&#34;&gt;Go и путь Gopher-а&lt;/h3&gt;
+
+&lt;p&gt;Совсем не так давно я изучая просторы Go, я наткнулся на проект &lt;a href=&#34;https://gohugo.io&#34;&gt;Hugo&lt;/a&gt;.
+Проект представляет собой генерацию статичных страниц на основе файлов формата markdown.&lt;/p&gt;
+
+&lt;p&gt;Так как у меня в голове давно засела мысль о &amp;ldquo;скоростном вебе&amp;rdquo;, я незамедлительно решил что перенесу блог весны на платформу &lt;a href=&#34;https://gohugo.io&#34;&gt;Hugo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Основных причин было две:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Сделать блог быстрым, ghost не радовал скоростью&lt;/li&gt;
+&lt;li&gt;Изучить подробнее Go и его работу с вебом.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;сказано-сделано&#34;&gt;Сказано-сделано&lt;/h3&gt;
+
+&lt;p&gt;Первым делом надо перенести старые записи в новый формат. Есть чудесный скрипт &lt;a href=&#34;https://github.com/jbarone/ghostToHugo&#34;&gt;GhostToHugo&lt;/a&gt;.
+Обрабатываем им выгруженные даннее из Ghost и всё можно запускать Hugo.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo server -w 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;По умолчанию он запускает сервер по адресу localhost:1313, при желании его можно сменить.&lt;/p&gt;
+
+&lt;h3 id=&#34;выгрузка-на-сервер-docker&#34;&gt;Выгрузка на сервер. Docker.&lt;/h3&gt;
+
+&lt;p&gt;Небольшой поиск готовых решений на &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker Hub&lt;/a&gt; и я остановился на образе &lt;a href=&#34;https://github.com/jojomi/docker-hugo&#34;&gt;&lt;strong&gt;jojomi/hugo&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Файл run.sh который является &lt;em&gt;точкой входа&lt;/em&gt; docker-контейнера. Основными параметрами при запуске сервера на которые стоит обратить внимание являются
+&lt;em&gt;&amp;mdash;source=&amp;ldquo;/src&amp;rdquo; и &amp;ndash;destination=&amp;ldquo;/output&amp;rdquo;&lt;/em&gt;
+т.е. путь к проекту на Hugo и место куда сложить статику.&lt;/p&gt;
+
+&lt;h4 id=&#34;файл-run-sh&#34;&gt;Файл run.sh&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/usr/bin/env sh
+
+WATCH=&amp;quot;${HUGO_WATCH:=false}&amp;quot;
+SLEEP=&amp;quot;${HUGO_REFRESH_TIME:=-1}&amp;quot;
+echo &amp;quot;HUGO_WATCH:&amp;quot; $WATCH
+echo &amp;quot;HUGO_REFRESH_TIME:&amp;quot; $HUGO_REFRESH_TIME
+echo &amp;quot;HUGO_THEME:&amp;quot; $HUGO_THEME
+echo &amp;quot;HUGO_BASEURL&amp;quot; $HUGO_BASEURL
+
+HUGO=/usr/bin/hugo
+
+while [ true ]
+do
+    if [[ $HUGO_WATCH != &#39;false&#39; ]]; then
+	    echo &amp;quot;Watching...&amp;quot;
+        $HUGO server --watch=true --source=&amp;quot;/src&amp;quot; --theme=&amp;quot;$HUGO_THEME&amp;quot; --destination=&amp;quot;/output&amp;quot; --baseUrl=&amp;quot;$HUGO_BASEURL&amp;quot; || exit 1
+    else
+	    echo &amp;quot;Building one time...&amp;quot;
+        $HUGO --source=&amp;quot;/src&amp;quot; --theme=&amp;quot;$HUGO_THEME&amp;quot; --destination=&amp;quot;/output&amp;quot; --baseUrl=&amp;quot;$HUGO_BASEURL&amp;quot; || exit 1
+    fi
+
+    if [[ $HUGO_REFRESH_TIME == -1 ]]; then
+        exit 0
+    fi
+    echo &amp;quot;Sleeping for $HUGO_REFRESH_TIME seconds...&amp;quot;
+    sleep $SLEEP
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Немного о том как работает Hugo. На основе .md файлов и шаблона темы он генерирует готовые html которые являются &lt;strong&gt;полностью статичными&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Т.е. на выходе мы получим лишь статичные файлы которые мы покажем пользователям. А кто справится с этой задачей лучше чем nginx?&lt;/p&gt;
+
+&lt;p&gt;Связываем 2 контейнера между собой при помощи &lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;docker-compose&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;файл-docker-compose-yml&#34;&gt;Файл docker-compose.yml&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;hugo:
+  image: jojomi/hugo:latest
+  volumes:
+    - ./blog.vesna.kz/:/src
+    - ./output/:/output
+  environment:
+    - HUGO_REFRESH_TIME=3600
+    - HUGO_THEME=robust
+    - HUGO_WATCH=false
+    - HUGO_BASEURL=http://blog.vesna.kz
+  restart: always
+
+web:
+  image: jojomi/nginx-static
+  volumes:
+    - ./output:/var/www
+  environment:
+    - VIRTUAL_HOST=blog.vesna.kz
+  ports:
+    - &amp;quot;80:80&amp;quot;
+  restart: always
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Запускаем&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker-composer -f docker-compose.yml up
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;итог&#34;&gt;Итог&lt;/h3&gt;
+
+&lt;p&gt;На хостовой машине мы получаем nginx на 80-м порту, который показывает содержимое статичной папки блога. Которая в свою очередь генерится каждый час на основе файлов из проекта Hugo.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@blog:~# docker ps
+CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS              PORTS                         NAMES
+1a0419db8e6b        jojomi/hugo:latest    &amp;quot;/run.sh&amp;quot;           17 hours ago        Up 17 hours         1313/tcp                      root_hugo_1
+6dab6f20a315        jojomi/nginx-static   &amp;quot;nginx&amp;quot;             17 hours ago        Up 17 hours         0.0.0.0:80-&amp;gt;80/tcp, 443/tcp   root_web_1
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Нам остаётся лишь писать новые записи в блог и пушить их на сервер&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;hugo new vesna/blog.md
+git add vesna/blog.md
+git commit -m &amp;quot;Новая запись в блоге&amp;quot;
+git push production master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That`s all folks!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Новый путь творческой группы &#34;Весна&#34;</title>
+      <link>http://example.org/vesna/new-path/</link>
+      <pubDate>Mon, 01 Feb 2016 18:23:14 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/vesna/new-path/</guid>
+      <description>
+
+&lt;h2 id=&#34;с-чего-всё-начиналось&#34;&gt;С чего всё начиналось&lt;/h2&gt;
+
+&lt;p&gt;Я пришёл в веб-программирование 10 лет назад голодным студентом, и сразу &lt;em&gt;&amp;ldquo;по-программистки&amp;rdquo;&lt;/em&gt; влюбился в эту область.
+Ведь здесь было целое поле огромных возможностей для развития и множество мелких побед. Здесь я чувствовал себя &amp;ldquo;победителем&amp;rdquo;, а программисту это весьма важно.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;смог заставить это работать в IE6&lt;/li&gt;
+&lt;li&gt;смог подключить плагин JQuery&lt;/li&gt;
+&lt;li&gt;заставил эту картинку двигаться&lt;/li&gt;
+&lt;li&gt;написал свою CMS, и доволен этим&lt;/li&gt;
+&lt;li&gt;переписал свою CMS, потому что старая была ужасна.&lt;/li&gt;
+&lt;li&gt;Хосподи, о чём я думал когда писал предыдущие версии. Надо переписать&amp;hellip; (Да, их действительно было 3-версии)&lt;/li&gt;
+&lt;li&gt;и т.д.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Я вообще считаю веб-програмирование лучшим и эффективным средством для становления себя как программиста.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Что только не поменялось за это время.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2007 год. Менеджер проектов - отдельный человек который руководил всеми проектами, проводил планёрки.&lt;/li&gt;
+&lt;li&gt;2008 год. Новая должность проектировщика для сложных проектов.&lt;/li&gt;
+&lt;li&gt;2009 год. Организация тех. составляющей офиса. Общее хранилище проектов (документация, дизайны и т.д.).&lt;/li&gt;
+&lt;li&gt;2010 год. Внедрение принципа &amp;ldquo;внутреннего клиента&amp;rdquo;. Разделение менеджеров проектов от менеджеров по продажам.&lt;/li&gt;
+&lt;li&gt;2011 год. Внедрение новой методологии Agile. Плюсы и минусы. Пара проектов, где на подобную схему согласились заказчики.&lt;/li&gt;
+&lt;li&gt;2012 год. Первые проекты, которые растянулись более чем на год. Всё та же причина &amp;ldquo;Вы же должны были предусмотреть.&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;2016 год. Хватит&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;За всё это время неизменным оставалось одно &amp;ndash; &lt;strong&gt;вера в успех&lt;/strong&gt;. и желание вывести разработку в казнете на новый уровень.&lt;/p&gt;
+
+&lt;h2 id=&#34;справимся-ли-а-почему-бы-не-попробовать&#34;&gt;Справимся ли? А почему бы не попробовать?&lt;/h2&gt;
+
+&lt;p&gt;Этот принцип позволял нам реализовывать достаточно нестандартные для веба проекты.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Простые визитки и корп. сайты&lt;/li&gt;
+&lt;li&gt;Магазины&lt;/li&gt;
+&lt;li&gt;Порталы&lt;/li&gt;
+&lt;li&gt;Агрегаторы&lt;/li&gt;
+&lt;li&gt;Проекты для IDTV (API которое отвечает сгенерированной картинкой)&lt;/li&gt;
+&lt;li&gt;Система видеовещания в школах в условиях слабого интернета. (&lt;em&gt;nginx + rtmp = love forever&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;мобильные и SMART-приложения.&lt;/li&gt;
+&lt;li&gt;Парсеры прайсов и excel в вебе.&lt;/li&gt;
+&lt;li&gt;Система генераций задач для школьников&lt;/li&gt;
+&lt;li&gt;Системы голосований&lt;/li&gt;
+&lt;li&gt;Приложения для социальных сетей&lt;/li&gt;
+&lt;li&gt;Множество внутренних инструментов для менеджеров и программистов&lt;/li&gt;
+&lt;li&gt;И многое другое&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Каждый из проектов позволял реализовать какое то новое решение, применить новую технологию.
+(Angular, ReactJS, Node.JS, nwjs, MeteorJS и даже Go) понять плюсы и минусы технологий.
+Да, иногда это выходило боком, срывом сроков. Но всегда имело положительный эффект для команды. &lt;strong&gt;Команда развивалась и становилась сильнее.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;горящие-и-сгоревшие-программисты&#34;&gt;Горящие и сгоревшие программисты&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Я вообще считаю веб-програмирование лучшим и эффективным средством для становления себя как программиста.
+&lt;strong&gt;Да, но при этом, веб-програмирование в Казнете - самая эффективная область, чтобы “спалить” программиста&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Постоянно меняющиеся требования и разводящие руками от бессилия менеджеры через некоторое время превращают программиста в бездумного исполнителя. А исполнители не приживаются в команде и через некоторое время уходят в более &amp;ldquo;теплое и спокойное&amp;rdquo; место.&lt;/p&gt;
+
+&lt;p&gt;Я помню всех ушедших по этой причине ребят и проекты, которые их спалили.
+&lt;em&gt;Простите ребята, я пытался это изменить.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Я устал палить. Настало время зажечь по-новому&amp;hellip;&lt;/p&gt;
+
+&lt;h2 id=&#34;весна-не-будет&#34;&gt;&amp;ldquo;Весна не будет&amp;rdquo;&lt;/h2&gt;
+
+&lt;p&gt;По мотивам популярной шутки, &amp;ldquo;Весны&amp;rdquo; не будет.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Творческая группа весна прекращает своё существование как студия по разработке интернет-проектов на заказ.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;И чем дальше я нахожусь от принятого решения, тем более правильным оно мне кажется.&lt;/p&gt;
+
+&lt;p&gt;Планёрка. Разбор оставшихся проектов.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;Какой у нас статус с проектом &amp;ldquo;Х&amp;rdquo;? Всё ли мы сделали? Проект то уже должен быть закрыт.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Да всё. С их стороны они ещё не показали проект генеральному директору. Ждут его коррекций.&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;И в этом вся соль веб-разработки. Более сотни &amp;ldquo;человекочасов&amp;rdquo; было потрачено, чтобы спроектировать, нарисовать, сверстать, спрограммировать, протестировать, наполнить, выгрузить, настроить проект.
+А всё упрётся в одного человека, который увидит проект впервые.
+Большее влияние будет оказывать его настроение, чем ТЗ или утверждённый дизайн.&lt;/p&gt;
+
+&lt;p&gt;Можно обмазываться ТЗ в три слоя, каждым утверждённым шагом, и чего только мы не придумывали за 10 лет.
+Но победить &amp;ldquo;&lt;em&gt;безучастность&lt;/em&gt;&amp;rdquo; мы так и не смогли.&lt;/p&gt;
+
+&lt;p&gt;Я не говорю о всех проектах, но очень многие создаются только ради того чтобы быть, а не работать.&lt;/p&gt;
+
+&lt;p&gt;Подобные условия не способствуют ни эффективности работ, ни росту команды.&lt;/p&gt;
+
+&lt;h2 id=&#34;новый-путь&#34;&gt;Новый путь&lt;/h2&gt;
+
+&lt;p&gt;Команда творческой группы &amp;ldquo;Весна&amp;rdquo; продолжит работать над своими проектами, применяя и приумножая свои знания и опыт.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://example.org/images/vesna1-1200.jpg&#34; onmouseover=&#34;this.src=&#39;http://example.org/images/vesna2-1200.jpg&#39;&#34; onmouseout=&#34;this.src=&#39;http://example.org/images/vesna1-1200.jpg&#39;&#34;&gt;
+&lt;p style=&#34;text-align:center;&#34;&gt; &lt;b&gt;Только вперёд!&lt;/b&gt; &lt;/p&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Сравнение производительности PHP5.6, PHP7, NodeJS, Go</title>
+      <link>http://example.org/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/</link>
+      <pubDate>Thu, 14 Jan 2016 13:28:26 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/</guid>
+      <description>
+
+&lt;h2 id=&#34;оптимизация&#34;&gt;Оптимизация&lt;/h2&gt;
+
+&lt;p&gt;Задумавшись над оптимизацией производительности одного из проектов, захотелось привести ряд замеров скорости на разных базах и платформах.&lt;/p&gt;
+
+&lt;p&gt;Чтобы не затрагивать аспекты производительности фреймворков (роутинг, работа с шаблонами) я старался минимально протестировать скорость инициации соединения с базой и запрос на получение данных.&lt;/p&gt;
+
+&lt;p&gt;И вот что из этого вышло:&lt;/p&gt;
+
+&lt;iframe width=&#34;700&#34; height=&#34;400&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/16j_2VuqbnnF04v929XTceJ9vHRksOSFOVBx7B7rjVJ8/pubchart?oid=1205557003&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Анализ скорости загрузки и работы сайта Scat.kz</title>
+      <link>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-sta-kz/</link>
+      <pubDate>Thu, 27 Aug 2015 10:29:52 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-sta-kz/</guid>
+      <description>
+
+&lt;p&gt;Следующий на очереди Scat.kz, с показателем firstPaint в 730мс.&lt;/p&gt;
+
+&lt;h2 id=&#34;основные-показатели&#34;&gt;Основные показатели&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://example.org/images/2015/08/screen_023.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;загрузка-документа&#34;&gt;Загрузка документа&lt;/h2&gt;
+
+&lt;p&gt;Общий объём документа в 2.6мб. Сайт полностью грузится за 14.52 секунды.
+Основной объём страницы в картинках, так же сильно смущает TTFB в 555мс, при отдаче статики. Это говорит либо о неправильных настройках сервера, либо его нагрузке при отдаче статики.
+&lt;img src=&#34;http://example.org/images/2015/08/screen_025.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;pagespeed-57-100&#34;&gt;PageSpeed ==57 / 100==&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fwww.scat.kz%2Fru%2F&amp;amp;tab=desktop&#34;&gt;Отчёт PageSpeed&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Основные рекомендации:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Сжатие картинок. Загруженные картинки не оптимизированы под веб. (Сохранение JPG с качеством не более 75 и удаление EXIF информации)&lt;/li&gt;
+&lt;li&gt;На сервере отключено сжатие и кеширование статики необходимо его обязательно настроить.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Анализ скорости загрузки и работы сайта Aviasales.kz</title>
+      <link>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/</link>
+      <pubDate>Mon, 10 Aug 2015 20:57:03 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/</guid>
+      <description>
+
+&lt;p&gt;Следующий на очереди Aviasales.kz, с показателем firstPaint в 685мс.&lt;/p&gt;
+
+&lt;h2 id=&#34;основные-показатели&#34;&gt;Основные показатели&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://example.org/images/2015/08/screen_012.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;загрузка-документа&#34;&gt;Загрузка документа&lt;/h2&gt;
+
+&lt;p&gt;Общий объём документа в 589Кб (в 4 раза меньше чем сайт bekair.com), обеспечивает быструю загрузку даже на скорости 1Мбит/сек. Сайт полностью грузится за 3.75 секунды.
+&lt;img src=&#34;http://example.org/images/2015/08/screen_013.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Минусом является тот факт, что проект расположен где то в Великобритании. Вследствие этого увеличивается пинг (~120мс) и, соответственно, время ожидания получения данных (TTFB в среднем около 250мс).&lt;/p&gt;
+
+&lt;h2 id=&#34;блокирующие-загрузки&#34;&gt;Блокирующие загрузки&lt;/h2&gt;
+
+&lt;p&gt;Все файлы в секции HEAD блокируют отображение страницы до момента их полной загрузки.
+Крайне необходимо сокращать количество подобных ресурсов.
+&amp;gt;Скрипты необходимо выносить в нижнюю часть документа, это никак не сказывается на их функциональности.&lt;/p&gt;
+
+&lt;p&gt;Единственным положительным моментов в данной картине является то, что часть этих ресурсов скачивается с &lt;a href=&#34;https://tech.yandex.ru/jslibs/&#34;&gt;CDN-Yandex&lt;/a&gt;.
+Это позволяет выполнять их загрузку параллельно с другими ресурсами, да и средний TTFB в 60мс здесь играет роль.
+&lt;img src=&#34;http://example.org/images/2015/08/screen_014.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;timeline&#34;&gt;Timeline&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://example.org/images/2015/08/screen_015.png&#34; alt=&#34;&#34; /&gt;
+На данном скриншоте изображены 7 секунд просмотра уже загруженного сайта. Желтые столбики это вызовы функций, зелёные это процессы прорисовки страницы. Частью этих вызовов и причиной постоянной прорисовки страницы является бегущая строка &amp;ldquo;Сейчас ищут:&amp;ldquo;. Её анимация реализована при помощи функции JQuery Animate. Почему в современных браузерах этого делать не стоит,  очень хорошо описал &lt;a href=&#34;http://paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/&#34;&gt;Paul Irish&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-JS&#34;&gt;var r = function() {
+    t.animate({
+        left: &amp;quot;-&amp;quot; + e + &amp;quot;px&amp;quot;
+    }, 300 * e / 5, function() {
+        t.css({
+            left: &amp;quot;0px&amp;quot;
+        });
+        r()
+    })
+};
+r();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Большая половина вызовов JS-функций принадлежит &lt;a href=&#34;https://old.metrika.yandex.ru/promo/webvisor/&#34;&gt;Yandex Webvisor&lt;/a&gt;, записывающей действия вашего пользователя на сайте.
+Нужно учитывать её наличие, если вы собираетесь добиваться &lt;strong&gt;60FPS&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;вывод&#34;&gt;Вывод&lt;/h2&gt;
+
+&lt;p&gt;Нужно сокращать количество блокирующих ресурсов в секции HEAD, и если основная аудитория сайта из Казахстана, то переносить его поближе, на хостинговые площадки Казахстана или России.&lt;/p&gt;
+
+&lt;h2 id=&#34;почитать-ещё&#34;&gt;Почитать ещё&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.vesna.kz/meteor-shop-skorost-pochiemu-ona-vazhna/&#34;&gt;Скорость загрузки и работы сайта- почему она важна&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.vesna.kz/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/&#34;&gt;Анализ скорости загрузки и работы сайта Aviasales.kz&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Анализ скорости загрузки и работы сайта Bekair.com</title>
+      <link>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/</link>
+      <pubDate>Wed, 05 Aug 2015 15:43:14 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/</guid>
+      <description>
+
+&lt;p&gt;Тестирование производительности я решил начать с проекта, продемонстрировавшего самый лучший показатель &amp;ldquo;firstPaint&amp;rdquo;.&lt;/p&gt;
+
+&lt;h2 id=&#34;основные-показатели&#34;&gt;Основные показатели&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://example.org/images/2015/08/screen_003.png&#34; alt=&#34;Основные показатели&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Быстрое начало прорисовки сайта обусловлено малым количеством запросов и небольшим размеров &amp;ldquo;блокирующих загрузок&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Но дальше начинается интересное.&lt;/p&gt;
+
+&lt;p&gt;Тестирование загрузки проводилось при скорости 1Mbps (Good 3G).
+Обратите внимание на синий цвет, это длительность процесса загрузки изображений.
+&lt;img src=&#34;http://example.org/images/2015/08/screen_001.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Как мы видим, наибольшую часть времени загрузки страницы занимает загрузка изображений, и их на странице 1.8 Мбайт из 1.9 общего объёма. (95% веса страницы!)&lt;/p&gt;
+
+&lt;p&gt;IMG_1638_1.jpg, IMG_2218_1.jpg - замечательные названия для изображений, не правда ли? В таких случаях хочется сказать: &amp;ldquo;Спасибо что не BMP или RAW&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Может такое качество оправдано и изображения необходимы странице, но&amp;hellip;
+&lt;img src=&#34;http://example.org/images/2015/08/screen_004.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Картинка с разрешением 1024x683 и весом в 630 Кб выводится размером 70x47 пикселей. Такое изображение будет весить всего 12.6 Кбайт. &lt;strong&gt;В 50 раз меньше, Карл!&lt;/strong&gt; Т.е. за счёт оптимизации одной лишь картинки можно сократить &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;4&lt;/sub&gt; веса страницы!&lt;/p&gt;
+
+&lt;p&gt;Есть мнение, что кеш браузера решает эту проблему. Один раз загрузив изображение, он больше не будет её скачивать. Да это так, но важно понимать что с этим изображением происходит в браузере. Он работает с этой картинкой постоянно, сжимает до необходимых размеров. Даже когда &amp;ldquo;скролит&amp;rdquo;!&lt;/p&gt;
+
+&lt;h2 id=&#34;60-fps&#34;&gt;60 FPS&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Для того чтобы добиться плавной работы сайта в 60FPS, нужно чтобы на один кадр уходило не больше &lt;strong&gt;16 мс&lt;/strong&gt;!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;42 миллисекунды&lt;/strong&gt; потребовалось браузеру чтобы декодировать изображение.&lt;br /&gt;
+&lt;img src=&#34;http://example.org/images/2015/08/screen_006.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;На этом скриншоте изображён timeline процесса прокрутки. Сайт сначала прокрутили вниз, потом вверх. Зелёные столбцы (которые выше полосы 60fps и 30fps) отображают работу браузера над растеризацией перед отображением (превращением изменённого документа в изображение).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://example.org/images/2015/08/screen_007.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Никогда не сжимайте картинки стилями!&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;итог&#34;&gt;Итог&lt;/h2&gt;
+
+&lt;p&gt;Основная беда данного проекта - слишком высокое разрешение картинок. Это, казалось бы, мелочь, но оказывает пагубное влияние как на скорость загрузки, так и на производительность сайта. Комбинирование CSS и JS желательно, но это &amp;ldquo;незаметные&amp;rdquo; оптимизации на фоне избыточных размеров изображений.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Сравнение скорости сайтов авиакомпаний и агрегаторов</title>
+      <link>http://example.org/ghost/sravnieniie-skorosti-zaghruzki/</link>
+      <pubDate>Tue, 04 Aug 2015 16:51:22 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/sravnieniie-skorosti-zaghruzki/</guid>
+      <description>
+
+&lt;p&gt;Увидев в ленте FB &lt;a href=&#34;https://www.facebook.com/alimzhan.bissembayev/posts/1134310696582323&#34;&gt;пост&lt;/a&gt; о сравнении скорости загрузки сайтов различных авиакомпаний и aviata.kz, решил что отличным продолжением темы &lt;a href=&#34;http://blog.vesna.kz/meteor-shop-skorost-pochiemu-ona-vazhna/&#34;&gt;&amp;ldquo;Скорости загрузки сайтов&amp;rdquo;&lt;/a&gt;, будет провести более глубокое исследование на тему клиентской оптимизации, взяв за основу предоставленную выборку, но немного дополнив её.&lt;/p&gt;
+
+&lt;p&gt;Сначала поговорим о цифрах, потом разберём каждый сайт отдельно.&lt;/p&gt;
+
+&lt;p&gt;Сайты авиакомпаний:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.bekair.com&#34;&gt;http://www.bekair.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.scat.kz/ru/&#34;&gt;http://www.scat.kz/ru/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://airastana.com/kaz/ru-RU&#34;&gt;http://airastana.com/kaz/ru-RU&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Агрегаторы авиабилетов:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.chocotravel.com/&#34;&gt;https://www.chocotravel.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://aviasales.kz/&#34;&gt;http://aviasales.kz/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://aviata.kz/&#34;&gt;https://aviata.kz/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://flight.kz/&#34;&gt;https://flight.kz/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;часть-1-цифры&#34;&gt;Часть 1. Цифры&lt;/h2&gt;
+
+&lt;p&gt;Основным (и самым простым) параметром при загрузке страницы является её объём. Он влияет на время загрузки документа (стилей и скриптов) в браузер пользователя.&lt;/p&gt;
+
+&lt;h3 id=&#34;вес-страницы-кб&#34;&gt;Вес страницы (Кб)&lt;/h3&gt;
+
+&lt;p&gt;Суммарный вес страницы, включая скрипты, стили и изображения. Чем он меньше тем лучше, особенно на мобильных устройствах.
+&lt;iframe width=&#34;537.7258160773808&#34; height=&#34;310.524291992188&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1gXQ3wgyhlp77sz0HpVFM03uipu6b4otP6vqGGOk7FvY/pubchart?oid=544889000&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;вес-js-кода-кб&#34;&gt;Вес JS-кода (Кб)&lt;/h3&gt;
+
+&lt;p&gt;Скрипты, которые делают страницу &amp;ldquo;умнее&amp;rdquo; =). Их чрезмерное использование может пагубно сказываться на скорости работы сайта.
+&lt;iframe width=&#34;569.7781627105671&#34; height=&#34;329.024291992188&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1gXQ3wgyhlp77sz0HpVFM03uipu6b4otP6vqGGOk7FvY/pubchart?oid=1325115388&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;вес-css-кода-кб&#34;&gt;Вес CSS-кода (Кб)&lt;/h3&gt;
+
+&lt;p&gt;Стили определяют структуру и вид документа.
+&lt;iframe width=&#34;569.7781627105671&#34; height=&#34;329.024291992188&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1gXQ3wgyhlp77sz0HpVFM03uipu6b4otP6vqGGOk7FvY/pubchart?oid=158869673&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;скорость-ответа-сервера-мс&#34;&gt;Скорость ответа сервера (мс)&lt;/h3&gt;
+
+&lt;p&gt;Время, в течение которого браузер ожидает ответа от сервера. Зависит от провайдера, сети, настроек на сервере (кеширование и т.д.), загруженности сервера, а также, что самое важное, скорости работы backend-а. Также есть термин, определяющий этот параметр - &amp;ldquo;TTFB - Time To First Byte&amp;rdquo;. Другими словами, это то, насколько быстро сервер формирует HTML для вашего пользователя.
+&lt;iframe width=&#34;569.7781627105671&#34; height=&#34;329.024291992188&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1gXQ3wgyhlp77sz0HpVFM03uipu6b4otP6vqGGOk7FvY/pubchart?oid=327297239&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;загрузка-dom-мс&#34;&gt;Загрузка DOM (мс)&lt;/h3&gt;
+
+&lt;p&gt;Следующим шагом является получение HTML от сервера. На этот параметр влияет скорость сети и размер данных.&lt;br /&gt;
+&lt;iframe width=&#34;569.7781627105671&#34; height=&#34;329.024291992188&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1gXQ3wgyhlp77sz0HpVFM03uipu6b4otP6vqGGOk7FvY/pubchart?oid=815551253&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;начало-прорисовки-мс&#34;&gt;Начало прорисовки (мс)&lt;/h3&gt;
+
+&lt;p&gt;После того как браузер получит HTML, скачает стили и скрипты, он будет готов к отображению страницы в браузере. Этот параметр называется &amp;ldquo;firstPaint&amp;rdquo;.
+&lt;iframe width=&#34;569.7781627105671&#34; height=&#34;329.024291992188&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1gXQ3wgyhlp77sz0HpVFM03uipu6b4otP6vqGGOk7FvY/pubchart?oid=672481347&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;завершение-загрузки-мс&#34;&gt;Завершение загрузки (мс)&lt;/h3&gt;
+
+&lt;p&gt;Параметр &amp;ldquo;&lt;strong&gt;pageLoadTime&lt;/strong&gt;&amp;rdquo; фиксирует время полной загрузки страницы, с учётом всех стилей, скриптов и изображений.
+&lt;iframe width=&#34;569.7781627105671&#34; height=&#34;329.024291992188&#34; seamless frameborder=&#34;0&#34; scrolling=&#34;no&#34; src=&#34;https://docs.google.com/spreadsheets/d/1gXQ3wgyhlp77sz0HpVFM03uipu6b4otP6vqGGOk7FvY/pubchart?oid=16441454&amp;amp;format=interactive&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;подробный-разбор-проектов&#34;&gt;Подробный разбор проектов&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.vesna.kz/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/&#34;&gt;Анализ скорости загрузки и работы сайта Bekair.com&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Продолжение следует&amp;hellip;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Meteor Shop: Скорость загрузки и работы сайта- почему она важна. Часть 1</title>
+      <link>http://example.org/ghost/meteor-shop-skorost-pochiemu-ona-vazhna/</link>
+      <pubDate>Mon, 03 Aug 2015 19:52:59 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/meteor-shop-skorost-pochiemu-ona-vazhna/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://twitter.com/andyhume&#34;&gt;Andy Hume&lt;/a&gt; - Разработчик в Twitter, в прошлом разработчик в Microsoft, Guardian
+&amp;gt; There is no difference for the user between a site &lt;strong&gt;down&lt;/strong&gt; and site beign &lt;strong&gt;inaccessable&lt;/strong&gt; due to loading issues caused by blocking resources or slow networks.&lt;/p&gt;
+
+&lt;p&gt;Очень интересная мысль заключается в том, что для пользователя нет никакой разницы между неработающим и медленным сайтом.&lt;/p&gt;
+
+&lt;p&gt;Вопрос скорости загрузки сайта стал более актуален с ростом популярности мобильных устройств.
+По данным kurs.kz, в июле 2015 года, 51% посетителей использовали мобильные устройства. Для сравнения в августе 2014 году их доля составляла 32%, а в 2013 году - 18%.&lt;/p&gt;
+
+&lt;div id=&#34;chart_div&#34;&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;ощущение-скорости-и-ux-user-experience&#34;&gt;Ощущение скорости и UX (User Experience)&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://example.org/images/2015/08/ux_5_components_cover-1080x675.jpg&#34; alt=&#34;&#34; /&gt;
+Изображение взято с &lt;a href=&#34;http://kleurvision.com/improve-your-website-user-experience/&#34;&gt;How To Improve Your Website User Experience&lt;/a&gt;
+&amp;gt; &lt;strong&gt;UX&lt;/strong&gt; - Международный стандарт ISO 9241-210[1] определяет опыт взаимодействия как «ощущение и реакцию человека, вследствие использования или предполагаемого использования продукта, системы или услуги»&lt;/p&gt;
+
+&lt;p&gt;*Простым языком, &lt;strong&gt;UX&lt;/strong&gt; это то, насколько ваша веб-страница выполняет поставленную перед ней задачу. Например, доносит контактную информацию, агитирует на покупку и т.д.*&lt;/p&gt;
+
+&lt;p&gt;Крайне важно чтобы ваши пользователи получали информацию как можно быстрее.   Потому что борьба за внимание вашего посетителя, начинается &lt;strong&gt;с первой секунды&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Никто не любит ждать.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Для концентрированного внимания пользователя, считается самым оптимальным получение информации с задержкой &lt;strong&gt;не более 1 секунды&lt;/strong&gt;. Если же информация подгружается дольше, это становиться заметным для него. А если задержка получения информации длится более 2.5 секунд, то внимание пользователя рассеивается.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.webpagetest.org/&#34;&gt;WebPageTest&lt;/a&gt; специально определили так называемый &amp;ldquo;&lt;strong&gt;Speed Index&lt;/strong&gt;&amp;rdquo; в котором измеряется скорость открытия страницы.
+А также вывели его оптимальное значение в &lt;strong&gt;1000&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Примечание: Для того чтобы значение было 1000 или ниже, нужно чтобы &amp;ldquo;==Critical Render Path==&amp;rdquo;  умещался в первые 14 КБайт вашей страницы, что практически нереально.&lt;/p&gt;
+
+&lt;p&gt;Давайте посмотрим примеры загрузки сайтов чтобы представлять о чём идёт речь (Примеры были проведены на скорости 1Мбит/с).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.webpagetest.org/result/150803_9Q_PKR/&#34;&gt;Тест Sports.kz&lt;/a&gt; - Speed Index = 10813 (0.869s - первый байт, 8.788s - начало отображение, 35.721s     - полная загрузка)
+&lt;iframe src=&#34;http://www.webpagetest.org/video/view.php?id=150803_9Q_PKR.1.0&amp;embed=1&amp;width=520&amp;height=432&#34; width=&#34;520&#34; height=&#34;432&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.webpagetest.org/result/150803_SS_PCH/&#34;&gt;Тест Tengrinews.kz&lt;/a&gt; Speed Index = 11810 (0.438s   - первый байт, 6.312s - начало отображение, 16.420s     - полная загрузка)
+&lt;iframe src=&#34;http://www.webpagetest.org/video/view.php?id=150803_SS_PCH.1.0&amp;embed=1&amp;width=520&amp;height=432&#34; width=&#34;520&#34; height=&#34;432&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.webpagetest.org/result/150803_10_Q0Z/&#34;&gt;Тест SmashingMagazine.com&lt;/a&gt; Speed Index = 4197 (  0.949s       - первый байт, 1.681s - начало отображение, 7.508s  - полная загрузка)
+&lt;iframe src=&#34;http://www.webpagetest.org/video/view.php?id=150803_10_Q0Z.1.0&amp;embed=1&amp;width=520&amp;height=432&#34; width=&#34;520&#34; height=&#34;432&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.webpagetest.org/result/150803_K8_Q2E/&#34;&gt;Тест Theguardian.com&lt;/a&gt; Speed Index = 3707  (0.671s - первый байт,     3.516s - начало отображение, 4.187s  - полная загрузка)
+&lt;iframe src=&#34;http://www.webpagetest.org/video/view.php?id=150803_K8_Q2E.1.0&amp;embed=1&amp;width=520&amp;height=432&#34; width=&#34;520&#34; height=&#34;432&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+
+&lt;p&gt;В следующих статьях я более подробнее опишу подробнее инструменты для измерения производительности и отдельной статьёй опишу что такое &lt;strong&gt;&amp;ldquo;60 fps Site&amp;rdquo;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;script type=&#34;text/javascript&#34; src=&#34;https://www.google.com/jsapi&#34;&gt;&lt;/script&gt;
+
+&lt;script type=&#34;text/javascript&#34;&gt;
+google.load(&#39;visualization&#39;, &#39;1&#39;, {packages: [&#39;corechart&#39;, &#39;line&#39;]});
+google.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn(&#39;number&#39;, &#39;X&#39;);
+      data.addColumn(&#39;number&#39;, &#39;Desktop&#39;);
+      data.addColumn(&#39;number&#39;, &#39;Mobile&#39;);
+
+
+      data.addRows([
+        [2013, 76.93, 23.07],   
+        [2014, 62.70, 37.30],   
+        [2015, 48.79, 51.21],   
+      ]);
+
+      var options = {
+        hAxis: {
+          title: &#39;Год&#39;
+        },
+        vAxis: {
+          title: &#39;% Пользователей&#39;
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById(&#39;chart_div&#39;));
+
+      chart.draw(data, options);
+    }
+&lt;/script&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Чеклист для тестировщиков</title>
+      <link>http://example.org/ghost/chieklist-dlia-tiestirovshchikov/</link>
+      <pubDate>Thu, 09 Jul 2015 19:47:31 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/chieklist-dlia-tiestirovshchikov/</guid>
+      <description>&lt;p&gt;Сегодня у нас возникла идея систематизировать все нюансы по проверке проекта при его завершении и ==деплое*==.&lt;/p&gt;
+
+&lt;p&gt;Мы решили сделать это коллективно через Google Docs.&lt;/p&gt;
+
+&lt;p&gt;Часть этого процесса удалось запечатлеть в скринкасте, что из этого вышло смотрите на коротком видео.&lt;/p&gt;
+
+&lt;iframe width=&#34;100%&#34; height=&#34;400&#34; src=&#34;https://www.youtube.com/embed/VoIaymzQ7xc&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;За 20 минут чек-лист был готов и отдан на рассмотрение менеджеров.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Go-go Team!&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Разработка магазина шин</title>
+      <link>http://example.org/ghost/razrabotka-maghazina-shin/</link>
+      <pubDate>Wed, 01 Jul 2015 19:28:00 &#43;0600</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>http://example.org/ghost/razrabotka-maghazina-shin/</guid>
+      <description>
+
+&lt;h2 id=&#34;3-ий-или-4-ый-брррр-сбился-со-счёта&#34;&gt;3-ий или 4-ый, брррр&amp;hellip; сбился со счёта&amp;hellip;&lt;/h2&gt;
+
+&lt;p&gt;В последнее время интерес к шинному бизнесу в интернете заметно вырос.
+Возможно дело в 40-ом месте в рейтинге &lt;a href=&#34;http://forbes.kz/ranking/50_krupneyshih_internet-kompaniy_kazahstana&#34;&gt;50 крупнейших интернет-компаний Казахстана&lt;/a&gt;, в ничем не примечательном (техническом плане) &lt;a href=&#34;http://ecar.kz&#34;&gt;интернет-магазине шин ecar.kz&lt;/a&gt;. Может быть просто клиенты созрели выбирать шины в интернете.&lt;/p&gt;
+
+&lt;p&gt;Но как бы то ни было, спрос на магазины подобного типа заметно вырос.&lt;/p&gt;
+
+&lt;p&gt;Все это сподвигло меня написать несколько статей на тему создания интернет-магазина шин. Попробуем затронуть темы от интеграции с поставщиками до SEO-продвижения и клиентской оптимизации.&lt;/p&gt;
+
+&lt;p&gt;Статьи я надеюсь будут полезны как заказчикам, так и технарям.&lt;/p&gt;
+
+&lt;p&gt;И так, начнём&lt;/p&gt;
+
+&lt;p&gt;1 - &lt;a href=&#34;http://example.org/maghazin-shin-1-podghotovka-dannykh-ili-ghdie-my-budiem-brat-informatsiiu&#34;&gt;Магазин шин 1: Подготовка данных, или где мы будем брать информацию?&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

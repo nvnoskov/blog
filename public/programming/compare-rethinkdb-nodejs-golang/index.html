@@ -1,0 +1,248 @@
+	
+	<!doctype html>
+<html lang="en">
+  <head>
+    <title>ALEXFINN - Сравнение производительности RethinkDB на NodeJS и Go</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    
+    <link href="/css/milk.min.css" rel="stylesheet">
+    <link href="/css/milk-responsive.min.css" rel="stylesheet">     
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="shortcut icon" href="/images/alexfinn.ico">
+    <link rel="apple-touch-icon" href="">
+    <link rel="canonical" href="http://example.org/programming/compare-rethinkdb-nodejs-golang/">
+
+    
+    <link href="/rss.xml" type="application/atom+xml" rel="alternate" title="My New Hugo Site">
+
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+  <div id="navbar-inner">
+    <div id="logo">
+       <a href=""><img src="/images/letter-a.png" width="100px"></img></a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="posts">
+
+
+	    
+	  <div class="post">
+	    <header class="post-header">
+	        <h1><a href="/programming/compare-rethinkdb-nodejs-golang/">Сравнение производительности RethinkDB на NodeJS и Go</a></h1>
+	        <div class="post-time">March 24 2016</div>
+	    </header>
+	    <div class="post-after">
+	        <div class="tags">
+	            
+	                <a href="http://example.org//tags/go">Go</a>
+	            
+	                <a href="http://example.org//tags/nodejs">NodeJS</a>
+	            
+	                <a href="http://example.org//tags/%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%B4%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D1%8C">Производительность</a>
+	            
+	                <a href="http://example.org//tags/rethinkdb">RethinkDB</a>
+	            
+	        </div>
+	    </div>
+	    <hr>
+	    <div class="post content">
+	        
+
+<h2 id="выбор-платформы-для-работы-rethinkdb">Выбор платформы для работы RethinkDB</h2>
+
+<p>Твёрдо решив что всё таки стоит попробовать использовать RethinkDB в качестве базы данных, я задался какой же платформой воспользоваться для  создания REST API.</p>
+
+<p>Раннее я <a href="/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/">сравнивал</a> RethinkDB c Mysql на различных платформах.
+Тест был тривиален и содержал лишь в себе инициацию соединения с БД и один запрос на выборку данных.</p>
+
+<iframe width="700" height="400" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/16j_2VuqbnnF04v929XTceJ9vHRksOSFOVBx7B7rjVJ8/pubchart?oid=1205557003&amp;format=interactive"></iframe>
+
+<h2 id="nodejs-или-go">NodeJS или Go</h2>
+
+<p>На графике понятно только одно, что &ldquo;только не PHP&rdquo;. Хотя PHP7 весьма неплох.</p>
+
+<p>Теперь пора провести более серьёзный тест на вставку, выборку и удаление данных. За основу я возьму архив изменений валютного курса с <a href="http://kurs.kz">kurs.kz</a></p>
+
+<p>В файле имеются 4114 значений такого вида.</p>
+
+<pre><code class="language-json">[{
+    &quot;id&quot;: &quot;2&quot;,
+    &quot;newdate&quot;: &quot;1095206400&quot;,
+    &quot;usd_buy&quot;: &quot;135.4500&quot;,
+    &quot;usd_sell&quot;: &quot;135.9500&quot;,
+    &quot;eur_buy&quot;: &quot;165.2500&quot;,
+    &quot;eur_sell&quot;: &quot;166.8500&quot;,
+    &quot;rur_buy&quot;: &quot;4.6000&quot;,
+    &quot;rur_sell&quot;: &quot;4.6500&quot;
+},
+... ]
+</code></pre>
+
+<h2 id="nodejs">NodeJS</h2>
+
+<h3 id="nodejs-множественная-вставка-bulk-insert">NodeJS множественная вставка (bulk insert)</h3>
+
+<pre><code class="language-bash">time curl localhost:3000/insert
+
+real    0m0.811s
+user    0m0.004s
+sys 0m0.004s
+</code></pre>
+
+<h3 id="nodejs-выборка">NodeJS выборка</h3>
+
+<h4 id="без-обработки-результатов">Без обработки результатов</h4>
+
+<p>Т.е первый отклик системы после запроса</p>
+
+<pre><code class="language-js">r.table('archive').run(conn, function(err, res){
+  if(err) throw err;
+  response.end();
+});
+</code></pre>
+
+<pre><code class="language-bash">time curl localhost:3000/select
+
+real    0m0.077s
+user    0m0.008s
+sys 0m0.000s
+</code></pre>
+
+<h4 id="с-обработкой-результатов-toarray">С обработкой результатов (toArray)</h4>
+
+<pre><code class="language-js">r.table('archive').run(conn, function(err, res){
+    if(err) throw err;
+    res.toArray(function(err, data){
+        console.log(err,data.length)
+        response.end();
+    });
+});
+</code></pre>
+
+<pre><code class="language-bash">time curl localhost:3000/select
+
+real    0m0.201s
+user    0m0.004s
+sys 0m0.004s
+</code></pre>
+
+<h3 id="nodejs-массовое-удаление">NodeJS массовое удаление</h3>
+
+<pre><code class="language-js">r.table('archive').delete()
+</code></pre>
+
+<pre><code class="language-bash">time curl localhost:3000/delete
+
+real    0m0.236s
+user    0m0.004s
+sys 0m0.004s
+
+</code></pre>
+
+<h3 id="nodejs-построчное-удаление">NodeJS построчное удаление</h3>
+
+<p>Здесь уже простым замером времени выполнения запроса не выйдет, так как тут множество асинхронных запросов (4114 шт.).
+Потому такой &ldquo;костыль&rdquo;.
+(И да я не учитываю время фактического выполнения команды на удаление, лишь сколько занимает &ldquo;прокрутка&rdquo; всех данных и запрос на их удаление.)</p>
+
+<pre><code class="language-js">res.each(function(err, row){
+    r.table('archive').get(row.id).delete().run(conn);
+}, function(){
+    console.log(+new Date()-start); // Завершение  выборки
+});
+</code></pre>
+
+<pre><code class="language-bash">==&gt;  780 ms
+</code></pre>
+
+<h2 id="go">Go</h2>
+
+<h3 id="go-множественная-вставка-bulk-insert">Go множественная вставка (bulk insert)</h3>
+
+<pre><code class="language-go">r.DB(&quot;test&quot;).Table(&quot;archive&quot;).Insert(archives).Run(session)
+</code></pre>
+
+<pre><code class="language-bash">[GIN] 2016/03/25 - 11:45:29 | 200 |  482.971048ms | 127.0.0.1 |   GET     /index
+</code></pre>
+
+<h3 id="go-выборка-с-приведением-к-интерфейсам-массиву">Go выборка с приведением к интерфейсам (массиву)</h3>
+
+<pre><code class="language-go">rows, err := r.DB(&quot;test&quot;).Table(&quot;archive&quot;).Run(session)
+if err != nil { fmt.Println(err)}
+var selectedArchives []Archive
+errParse := rows.All(&amp;selectedArchives)
+if errParse != nil { fmt.Printf(&quot;Error scanning database result: %s&quot;, errParse) }
+fmt.Printf(&quot;%d selectedArchives&quot;, len(selectedArchives))
+</code></pre>
+
+<pre><code class="language-bash">[GIN] 2016/03/25 - 11:51:12 | 200 |  210.791357ms | 127.0.0.1 |   GET     /select
+</code></pre>
+
+<h3 id="go-массовое-удаление">Go массовое удаление</h3>
+
+<pre><code class="language-go">r.DB(&quot;test&quot;).Table(&quot;archive&quot;).Delete().Run(session)
+</code></pre>
+
+<pre><code class="language-bash">[GIN] 2016/03/25 - 11:47:22 | 200 |  157.572104ms | 127.0.0.1 |   GET     /delete
+</code></pre>
+
+<h2 id="результаты">Результаты</h2>
+
+<p>Они весьма равные. Мне казалось что Go победит с большим отрывом.
+<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/1_RvFqRXL4pn2f6czZmjbU_B8gI3hG4HqWhApM79y6Zg/pubchart?oid=1150232941&amp;format=interactive"></iframe></p>
+
+<h2 id="p-s">P.S</h2>
+
+<p>Тесты проводились на машине AMD FX-8320E x 8, 16Gb</p>
+
+	    </div>
+	    
+	<div class="about">
+	<p> 
+     
+    </p>
+</div>
+		<nav id="pagination">
+			<a class="prev" href="http://example.org/programming/redux/">Prev</a>
+			<a class="next" href="http://example.org/programming/cp1251_to_utf8/">Next</a>
+		</nav>
+	
+		        <footer>
+		        	Built with <a href="https://github.com/spf13/hugo">Hugo</a>
+		        	<p>© Alexander Feller 2018</p>
+		        </footer>
+		    </div>
+		  </div>
+		</div>
+      </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + ":change-me";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 4]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="http://change-me" style="border:0;" alt="" /></p></noscript>
+
+
+</html>
+

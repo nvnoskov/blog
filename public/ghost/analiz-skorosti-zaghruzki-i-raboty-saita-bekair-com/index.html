@@ -1,0 +1,143 @@
+	
+	<!doctype html>
+<html lang="en">
+  <head>
+    <title>ALEXFINN - Анализ скорости загрузки и работы сайта Bekair.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    
+    <link href="/css/milk.min.css" rel="stylesheet">
+    <link href="/css/milk-responsive.min.css" rel="stylesheet">     
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="shortcut icon" href="/images/alexfinn.ico">
+    <link rel="apple-touch-icon" href="">
+    <link rel="canonical" href="http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/">
+
+    
+    <link href="/rss.xml" type="application/atom+xml" rel="alternate" title="My New Hugo Site">
+
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+  <div id="navbar-inner">
+    <div id="logo">
+       <a href=""><img src="/images/letter-a.png" width="100px"></img></a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="posts">
+
+
+	    
+	  <div class="post">
+	    <header class="post-header">
+	        <h1><a href="/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/">Анализ скорости загрузки и работы сайта Bekair.com</a></h1>
+	        <div class="post-time">August 5 2015</div>
+	    </header>
+	    <div class="post-after">
+	        <div class="tags">
+	            
+	                <a href="http://example.org//tags/%D0%BC%D0%B5%D1%82%D0%B5%D0%BE%D1%80">Метеор</a>
+	            
+	                <a href="http://example.org//tags/%D1%81%D0%BA%D0%BE%D1%80%D0%BE%D1%81%D1%82%D1%8C">Скорость</a>
+	            
+	        </div>
+	    </div>
+	    <hr>
+	    <div class="post content">
+	        
+
+<p>Тестирование производительности я решил начать с проекта, продемонстрировавшего самый лучший показатель &ldquo;firstPaint&rdquo;.</p>
+
+<h2 id="основные-показатели">Основные показатели</h2>
+
+<p><img src="/images/2015/08/screen_003.png" alt="Основные показатели" /></p>
+
+<p>Быстрое начало прорисовки сайта обусловлено малым количеством запросов и небольшим размеров &ldquo;блокирующих загрузок&rdquo;.</p>
+
+<p>Но дальше начинается интересное.</p>
+
+<p>Тестирование загрузки проводилось при скорости 1Mbps (Good 3G).
+Обратите внимание на синий цвет, это длительность процесса загрузки изображений.
+<img src="/images/2015/08/screen_001.png" alt="" /></p>
+
+<p>Как мы видим, наибольшую часть времени загрузки страницы занимает загрузка изображений, и их на странице 1.8 Мбайт из 1.9 общего объёма. (95% веса страницы!)</p>
+
+<p>IMG_1638_1.jpg, IMG_2218_1.jpg - замечательные названия для изображений, не правда ли? В таких случаях хочется сказать: &ldquo;Спасибо что не BMP или RAW&rdquo;.</p>
+
+<p>Может такое качество оправдано и изображения необходимы странице, но&hellip;
+<img src="/images/2015/08/screen_004.png" alt="" /></p>
+
+<p>Картинка с разрешением 1024x683 и весом в 630 Кб выводится размером 70x47 пикселей. Такое изображение будет весить всего 12.6 Кбайт. <strong>В 50 раз меньше, Карл!</strong> Т.е. за счёт оптимизации одной лишь картинки можно сократить <sup>1</sup>&frasl;<sub>4</sub> веса страницы!</p>
+
+<p>Есть мнение, что кеш браузера решает эту проблему. Один раз загрузив изображение, он больше не будет её скачивать. Да это так, но важно понимать что с этим изображением происходит в браузере. Он работает с этой картинкой постоянно, сжимает до необходимых размеров. Даже когда &ldquo;скролит&rdquo;!</p>
+
+<h2 id="60-fps">60 FPS</h2>
+
+<blockquote>
+<p>Для того чтобы добиться плавной работы сайта в 60FPS, нужно чтобы на один кадр уходило не больше <strong>16 мс</strong>!</p>
+</blockquote>
+
+<p><strong>42 миллисекунды</strong> потребовалось браузеру чтобы декодировать изображение.<br />
+<img src="/images/2015/08/screen_006.png" alt="" /></p>
+
+<p>На этом скриншоте изображён timeline процесса прокрутки. Сайт сначала прокрутили вниз, потом вверх. Зелёные столбцы (которые выше полосы 60fps и 30fps) отображают работу браузера над растеризацией перед отображением (превращением изменённого документа в изображение).</p>
+
+<p><img src="/images/2015/08/screen_007.png" alt="" /></p>
+
+<blockquote>
+<p><strong>Никогда не сжимайте картинки стилями!</strong></p>
+</blockquote>
+
+<h2 id="итог">Итог</h2>
+
+<p>Основная беда данного проекта - слишком высокое разрешение картинок. Это, казалось бы, мелочь, но оказывает пагубное влияние как на скорость загрузки, так и на производительность сайта. Комбинирование CSS и JS желательно, но это &ldquo;незаметные&rdquo; оптимизации на фоне избыточных размеров изображений.</p>
+
+	    </div>
+	    
+	<div class="about">
+	<p> 
+     
+    </p>
+</div>
+		<nav id="pagination">
+			<a class="prev" href="http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/">Prev</a>
+			<a class="next" href="http://example.org/ghost/sravnieniie-skorosti-zaghruzki/">Next</a>
+		</nav>
+	
+		        <footer>
+		        	Built with <a href="https://github.com/spf13/hugo">Hugo</a>
+		        	<p>© Alexander Feller 2018</p>
+		        </footer>
+		    </div>
+		  </div>
+		</div>
+      </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + ":change-me";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 4]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="http://change-me" style="border:0;" alt="" /></p></noscript>
+
+
+</html>
+

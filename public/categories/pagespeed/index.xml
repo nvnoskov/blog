@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PageSpeed on My New Hugo Site</title>
+    <link>http://example.org/categories/pagespeed/</link>
+    <description>Recent content in PageSpeed on My New Hugo Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 27 Aug 2015 10:29:52 +0600</lastBuildDate>
+    
+	<atom:link href="http://example.org/categories/pagespeed/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Анализ скорости загрузки и работы сайта Scat.kz</title>
+      <link>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-sta-kz/</link>
+      <pubDate>Thu, 27 Aug 2015 10:29:52 +0600</pubDate>
+      
+      <guid>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-sta-kz/</guid>
+      <description>Следующий на очереди Scat.kz, с показателем firstPaint в 730мс.
+Основные показатели Загрузка документа Общий объём документа в 2.6мб. Сайт полностью грузится за 14.52 секунды. Основной объём страницы в картинках, так же сильно смущает TTFB в 555мс, при отдаче статики. Это говорит либо о неправильных настройках сервера, либо его нагрузке при отдаче статики. PageSpeed ==57 / 100== Отчёт PageSpeed
+Основные рекомендации:
+ Сжатие картинок. Загруженные картинки не оптимизированы под веб. (Сохранение JPG с качеством не более 75 и удаление EXIF информации) На сервере отключено сжатие и кеширование статики необходимо его обязательно настроить.</description>
+    </item>
+    
+    <item>
+      <title>Анализ скорости загрузки и работы сайта Aviasales.kz</title>
+      <link>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/</link>
+      <pubDate>Mon, 10 Aug 2015 20:57:03 +0600</pubDate>
+      
+      <guid>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-aviasales-kz/</guid>
+      <description>Следующий на очереди Aviasales.kz, с показателем firstPaint в 685мс.
+Основные показатели Загрузка документа Общий объём документа в 589Кб (в 4 раза меньше чем сайт bekair.com), обеспечивает быструю загрузку даже на скорости 1Мбит/сек. Сайт полностью грузится за 3.75 секунды. Минусом является тот факт, что проект расположен где то в Великобритании. Вследствие этого увеличивается пинг (~120мс) и, соответственно, время ожидания получения данных (TTFB в среднем около 250мс).
+Блокирующие загрузки Все файлы в секции HEAD блокируют отображение страницы до момента их полной загрузки.</description>
+    </item>
+    
+    <item>
+      <title>Анализ скорости загрузки и работы сайта Bekair.com</title>
+      <link>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/</link>
+      <pubDate>Wed, 05 Aug 2015 15:43:14 +0600</pubDate>
+      
+      <guid>http://example.org/ghost/analiz-skorosti-zaghruzki-i-raboty-saita-bekair-com/</guid>
+      <description>Тестирование производительности я решил начать с проекта, продемонстрировавшего самый лучший показатель &amp;ldquo;firstPaint&amp;rdquo;.
+Основные показатели Быстрое начало прорисовки сайта обусловлено малым количеством запросов и небольшим размеров &amp;ldquo;блокирующих загрузок&amp;rdquo;.
+Но дальше начинается интересное.
+Тестирование загрузки проводилось при скорости 1Mbps (Good 3G). Обратите внимание на синий цвет, это длительность процесса загрузки изображений. Как мы видим, наибольшую часть времени загрузки страницы занимает загрузка изображений, и их на странице 1.8 Мбайт из 1.9 общего объёма.</description>
+    </item>
+    
+    <item>
+      <title>Сравнение скорости сайтов авиакомпаний и агрегаторов</title>
+      <link>http://example.org/ghost/sravnieniie-skorosti-zaghruzki/</link>
+      <pubDate>Tue, 04 Aug 2015 16:51:22 +0600</pubDate>
+      
+      <guid>http://example.org/ghost/sravnieniie-skorosti-zaghruzki/</guid>
+      <description>Увидев в ленте FB пост о сравнении скорости загрузки сайтов различных авиакомпаний и aviata.kz, решил что отличным продолжением темы &amp;ldquo;Скорости загрузки сайтов&amp;rdquo;, будет провести более глубокое исследование на тему клиентской оптимизации, взяв за основу предоставленную выборку, но немного дополнив её.
+Сначала поговорим о цифрах, потом разберём каждый сайт отдельно.
+Сайты авиакомпаний:
+ http://www.bekair.com http://www.scat.kz/ru/ http://airastana.com/kaz/ru-RU  Агрегаторы авиабилетов:
+ https://www.chocotravel.com/ http://aviasales.kz/ https://aviata.kz/ https://flight.kz/  Часть 1. Цифры Основным (и самым простым) параметром при загрузке страницы является её объём.</description>
+    </item>
+    
+  </channel>
+</rss>

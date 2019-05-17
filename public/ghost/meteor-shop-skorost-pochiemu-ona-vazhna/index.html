@@ -1,0 +1,175 @@
+	
+	<!doctype html>
+<html lang="en">
+  <head>
+    <title>ALEXFINN - Meteor Shop: Скорость загрузки и работы сайта- почему она важна. Часть 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    
+    <link href="/css/milk.min.css" rel="stylesheet">
+    <link href="/css/milk-responsive.min.css" rel="stylesheet">     
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="shortcut icon" href="/images/alexfinn.ico">
+    <link rel="apple-touch-icon" href="">
+    <link rel="canonical" href="http://example.org/ghost/meteor-shop-skorost-pochiemu-ona-vazhna/">
+
+    
+    <link href="/rss.xml" type="application/atom+xml" rel="alternate" title="My New Hugo Site">
+
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+  <div id="navbar-inner">
+    <div id="logo">
+       <a href=""><img src="/images/letter-a.png" width="100px"></img></a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="content">
+    <div class="row-fluid">
+      <div class="span12">
+        <div class="posts">
+
+
+	    
+	  <div class="post">
+	    <header class="post-header">
+	        <h1><a href="/ghost/meteor-shop-skorost-pochiemu-ona-vazhna/">Meteor Shop: Скорость загрузки и работы сайта- почему она важна. Часть 1</a></h1>
+	        <div class="post-time">August 3 2015</div>
+	    </header>
+	    <div class="post-after">
+	        <div class="tags">
+	            
+	        </div>
+	    </div>
+	    <hr>
+	    <div class="post content">
+	        
+
+<p><a href="https://twitter.com/andyhume">Andy Hume</a> - Разработчик в Twitter, в прошлом разработчик в Microsoft, Guardian
+&gt; There is no difference for the user between a site <strong>down</strong> and site beign <strong>inaccessable</strong> due to loading issues caused by blocking resources or slow networks.</p>
+
+<p>Очень интересная мысль заключается в том, что для пользователя нет никакой разницы между неработающим и медленным сайтом.</p>
+
+<p>Вопрос скорости загрузки сайта стал более актуален с ростом популярности мобильных устройств.
+По данным kurs.kz, в июле 2015 года, 51% посетителей использовали мобильные устройства. Для сравнения в августе 2014 году их доля составляла 32%, а в 2013 году - 18%.</p>
+
+<div id="chart_div"></div>
+
+<h2 id="ощущение-скорости-и-ux-user-experience">Ощущение скорости и UX (User Experience)</h2>
+
+<p><img src="/images/2015/08/ux_5_components_cover-1080x675.jpg" alt="" />
+Изображение взято с <a href="http://kleurvision.com/improve-your-website-user-experience/">How To Improve Your Website User Experience</a>
+&gt; <strong>UX</strong> - Международный стандарт ISO 9241-210[1] определяет опыт взаимодействия как «ощущение и реакцию человека, вследствие использования или предполагаемого использования продукта, системы или услуги»</p>
+
+<p>*Простым языком, <strong>UX</strong> это то, насколько ваша веб-страница выполняет поставленную перед ней задачу. Например, доносит контактную информацию, агитирует на покупку и т.д.*</p>
+
+<p>Крайне важно чтобы ваши пользователи получали информацию как можно быстрее.   Потому что борьба за внимание вашего посетителя, начинается <strong>с первой секунды</strong>.</p>
+
+<blockquote>
+<p>Никто не любит ждать.</p>
+</blockquote>
+
+<p>Для концентрированного внимания пользователя, считается самым оптимальным получение информации с задержкой <strong>не более 1 секунды</strong>. Если же информация подгружается дольше, это становиться заметным для него. А если задержка получения информации длится более 2.5 секунд, то внимание пользователя рассеивается.</p>
+
+<p><a href="http://www.webpagetest.org/">WebPageTest</a> специально определили так называемый &ldquo;<strong>Speed Index</strong>&rdquo; в котором измеряется скорость открытия страницы.
+А также вывели его оптимальное значение в <strong>1000</strong>.</p>
+
+<p>Примечание: Для того чтобы значение было 1000 или ниже, нужно чтобы &ldquo;==Critical Render Path==&rdquo;  умещался в первые 14 КБайт вашей страницы, что практически нереально.</p>
+
+<p>Давайте посмотрим примеры загрузки сайтов чтобы представлять о чём идёт речь (Примеры были проведены на скорости 1Мбит/с).</p>
+
+<p><a href="http://www.webpagetest.org/result/150803_9Q_PKR/">Тест Sports.kz</a> - Speed Index = 10813 (0.869s - первый байт, 8.788s - начало отображение, 35.721s     - полная загрузка)
+<iframe src="http://www.webpagetest.org/video/view.php?id=150803_9Q_PKR.1.0&embed=1&width=520&height=432" width="520" height="432"></iframe></p>
+
+<p><a href="http://www.webpagetest.org/result/150803_SS_PCH/">Тест Tengrinews.kz</a> Speed Index = 11810 (0.438s   - первый байт, 6.312s - начало отображение, 16.420s     - полная загрузка)
+<iframe src="http://www.webpagetest.org/video/view.php?id=150803_SS_PCH.1.0&embed=1&width=520&height=432" width="520" height="432"></iframe></p>
+
+<p><a href="http://www.webpagetest.org/result/150803_10_Q0Z/">Тест SmashingMagazine.com</a> Speed Index = 4197 (  0.949s       - первый байт, 1.681s - начало отображение, 7.508s  - полная загрузка)
+<iframe src="http://www.webpagetest.org/video/view.php?id=150803_10_Q0Z.1.0&embed=1&width=520&height=432" width="520" height="432"></iframe></p>
+
+<p><a href="http://www.webpagetest.org/result/150803_K8_Q2E/">Тест Theguardian.com</a> Speed Index = 3707  (0.671s - первый байт,     3.516s - начало отображение, 4.187s  - полная загрузка)
+<iframe src="http://www.webpagetest.org/video/view.php?id=150803_K8_Q2E.1.0&embed=1&width=520&height=432" width="520" height="432"></iframe></p>
+
+<p>В следующих статьях я более подробнее опишу подробнее инструменты для измерения производительности и отдельной статьёй опишу что такое <strong>&ldquo;60 fps Site&rdquo;</strong></p>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+google.load('visualization', '1', {packages: ['corechart', 'line']});
+google.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'X');
+      data.addColumn('number', 'Desktop');
+      data.addColumn('number', 'Mobile');
+
+
+      data.addRows([
+        [2013, 76.93, 23.07],   
+        [2014, 62.70, 37.30],   
+        [2015, 48.79, 51.21],   
+      ]);
+
+      var options = {
+        hAxis: {
+          title: 'Год'
+        },
+        vAxis: {
+          title: '% Пользователей'
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+</script>
+
+	    </div>
+	    
+	<div class="about">
+	<p> 
+     
+    </p>
+</div>
+		<nav id="pagination">
+			<a class="prev" href="http://example.org/ghost/sravnieniie-skorosti-zaghruzki/">Prev</a>
+			<a class="next" href="http://example.org/ghost/chieklist-dlia-tiestirovshchikov/">Next</a>
+		</nav>
+	
+		        <footer>
+		        	Built with <a href="https://github.com/spf13/hugo">Hugo</a>
+		        	<p>© Alexander Feller 2018</p>
+		        </footer>
+		    </div>
+		  </div>
+		</div>
+      </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + ":change-me";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 4]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="http://change-me" style="border:0;" alt="" /></p></noscript>
+
+
+</html>
+
