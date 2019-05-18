@@ -1,0 +1,51 @@
+<section class="pt-page pt-page-4" data-id="blog">
+    <div class="section-title-block">
+        <h2 class="section-title">Blog</h2>
+        <h5 class="section-description">My Diary</h5>
+    </div>
+    <div class="blog-masonry">
+        {{ range where .Paginator.Pages "Params.hidden" "ne" "true" }}
+        {{ $url := replace .Permalink .Site.BaseURL "" }}
+        {{ if ne $url "about/" }}
+        <!-- Blog Post 1 -->
+
+        <div class="item">
+            <div class="blog-card">
+                <div class="media-block">
+                    <a href="{{ .Permalink | absLangURL}}">
+                        {{ if isset .Params "image"}}
+                        <img class="post-image img-responsive" src="{{ .Params.image }}" alt="blog-post-1" />
+                        {{ else }}
+                        <img class="post-image img-responsive" src="images/blog_blank.jpg" alt="blog-post-1" />
+                        {{end}}
+                        <div class="mask"></div>
+                        <div class="post-date"><span class="day">{{ .Date.Format "2" }}</span><span
+                                class="month">{{ .Date.Format "Jan" }}</span>
+                            <!--<span class="year">2016</span>-->
+                        </div>
+                    </a>
+                </div>
+                <div class="post-info">
+                    {{ if isset .Params "tags"}}
+                    {{ range .Params.tags }}
+                    <a href="{{ "tags/" | absLangURL }}{{ . | urlize }}" class="label label-primary">{{ . }}</a>
+                    {{ end }}
+                    {{ end }}
+
+                    <a href="{{ .Permalink }}">
+                        <h4 class="blog-item-title">{{ .Title }}</h4>
+                    </a>
+                    {{ if .Site.Params.enableSummary }}
+                    {{ if .Site.Params.useDescriptionReplaceSummary }}
+                    <h2>{{ .Description | plainify }}</h2>
+                    {{ else }}
+                    <h2>{{ .Summary | plainify | htmlUnescape }}</h2>
+                    {{ end }}
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+        {{ end }}
+        {{ end }}
+    </div>
+</section>

@@ -1,0 +1,54 @@
+<!-- Navigation & Social buttons -->
+<div class="site-nav mobile-menu-hide">
+	<!-- Main menu -->
+	<ul id="nav" class="site-main-menu">
+		<!-- About Me Subpage link -->
+		<li>
+			<a class="pt-trigger" href="{{ .Site.BaseURL }}#about_me" data-animation="2" data-goto="1">About me</a>
+			<!-- href value = data-id without # of .pt-page -->
+		</li>
+		<li>
+			<a class="pt-trigger" href="{{ .Site.BaseURL }}#resume" data-animation="1" data-goto="2">Resume</a>
+		</li>
+		<!-- <li>
+                      <a class="pt-trigger" href="#portfolio" data-animation="2" data-goto="3">Portfolio</a>
+                    </li> -->
+		<li>
+			<a class="pt-trigger" href="{{ .Site.BaseURL }}#blog" data-animation="1" data-goto="3">Blog</a>
+		</li>
+		<!--             <li>
+                      <a class="pt-trigger" href="#contact" data-animation="2" data-goto="5">Contact</a>
+                    </li> -->
+	</ul>
+	<!-- /Main menu -->
+
+	<!-- Social buttons -->
+	<ul class="social-links">
+		<li><a class="tip social-button" href="#" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+		<!-- Full list of social icons: http://fontawesome.io/icons/#brand -->
+		<li><a class="tip social-button" href="#" title="Facebook"><i class="fa fa-facebook"></i></a>
+		</li>
+		<li><a class="tip social-button" href="#" title="Google Plus"><i class="fa fa-google-plus"></i></a></li>
+		<!--<li><a class="tip social-button" href="#" title="Youtube"><i class="fa fa-youtube"></i></a></li>-->
+		<!--<li><a class="tip social-button" href="#" title="last.fm"><i class="fa fa-lastfm"></i></a></li>-->
+		<!--<li><a class="tip social-button" href="#" title="Dribbble"><i class="fa fa-dribbble"></i></a></li>-->
+	</ul>
+	<!-- /Social buttons -->
+</div>
+<!-- <nav class="main-nav">
+	{{ $url := replace .Permalink .Site.BaseURL "" }}
+	{{ if not .IsHome }}
+		<a href='{{ .Site.BaseURL }}'> <span class="arrow">←</span>{{ with .Site.Params.home }}{{ . }}{{ else }}Home{{ end }}</a>
+	{{ end }}
+	<a href='{{ .Site.BaseURL }}posts'>{{ with .Site.Params.archive }}{{ . }}{{ else }}Archive{{ end }}</a>
+	<a href='{{ .Site.BaseURL }}tags'>{{ with .Site.Params.tags }}{{ . }}{{ else }}Tags{{ end }}</a>
+	<a href='{{ .Site.BaseURL }}about'>{{ with .Site.Params.about }}{{ . }}{{ else }}About{{ end }}</a>
+
+	{{ range $key, $val := .Site.Params.Links }}
+		<a href="{{ $val }}">{{ $key }}</a>
+	{{ end }}
+
+	{{ if .Site.Params.enableRSS }}
+	<a class="cta" href="{{ .Site.RSSLink }}">{{ with .Site.Params.subscribe }}{{ . }}{{ else }}Subscribe{{ end }}</a>
+	{{ end }}
+</nav> -->

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>RethinkDB on My New Hugo Site</title>
-    <link>http://example.org/tags/rethinkdb/</link>
-    <description>Recent content in RethinkDB on My New Hugo Site</description>
+    <title>RethinkDB on My blog</title>
+    <link>https://noskov.dev/tags/rethinkdb/</link>
+    <description>Recent content in RethinkDB on My blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>Everything is mine</copyright>
     <lastBuildDate>Thu, 24 Mar 2016 14:35:08 +0600</lastBuildDate>
     
-	<atom:link href="http://example.org/tags/rethinkdb/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://noskov.dev/tags/rethinkdb/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Сравнение производительности RethinkDB на NodeJS и Go</title>
-      <link>http://example.org/programming/compare-rethinkdb-nodejs-golang/</link>
+      <link>https://noskov.dev/programming/compare-rethinkdb-nodejs-golang/</link>
       <pubDate>Thu, 24 Mar 2016 14:35:08 +0600</pubDate>
       
-      <guid>http://example.org/programming/compare-rethinkdb-nodejs-golang/</guid>
+      <guid>https://noskov.dev/programming/compare-rethinkdb-nodejs-golang/</guid>
       <description>Выбор платформы для работы RethinkDB Твёрдо решив что всё таки стоит попробовать использовать RethinkDB в качестве базы данных, я задался какой же платформой воспользоваться для создания REST API.
 Раннее я сравнивал RethinkDB c Mysql на различных платформах. Тест был тривиален и содержал лишь в себе инициацию соединения с БД и один запрос на выборку данных.
  NodeJS или Go На графике понятно только одно, что &amp;ldquo;только не PHP&amp;rdquo;. Хотя PHP7 весьма неплох.</description>
@@ -24,10 +25,10 @@
     
     <item>
       <title>Сравнение производительности PHP5.6, PHP7, NodeJS, Go</title>
-      <link>http://example.org/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/</link>
+      <link>https://noskov.dev/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/</link>
       <pubDate>Thu, 14 Jan 2016 13:28:26 +0600</pubDate>
       
-      <guid>http://example.org/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/</guid>
+      <guid>https://noskov.dev/ghost/sravnieniie-proizvoditielnosti-mysqldb-rethinkdb/</guid>
       <description> Оптимизация Задумавшись над оптимизацией производительности одного из проектов, захотелось привести ряд замеров скорости на разных базах и платформах.
 Чтобы не затрагивать аспекты производительности фреймворков (роутинг, работа с шаблонами) я старался минимально протестировать скорость инициации соединения с базой и запрос на получение данных.
 И вот что из этого вышло:

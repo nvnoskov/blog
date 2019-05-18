@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Vesna on My New Hugo Site</title>
-    <link>http://example.org/categories/vesna/</link>
-    <description>Recent content in Vesna on My New Hugo Site</description>
+    <title>Vesna on My blog</title>
+    <link>https://noskov.dev/categories/vesna/</link>
+    <description>Recent content in Vesna on My blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>Everything is mine</copyright>
     <lastBuildDate>Mon, 01 Feb 2016 18:23:14 +0600</lastBuildDate>
     
-	<atom:link href="http://example.org/categories/vesna/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://noskov.dev/categories/vesna/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Новый путь творческой группы &#34;Весна&#34;</title>
-      <link>http://example.org/vesna/new-path/</link>
+      <link>https://noskov.dev/vesna/new-path/</link>
       <pubDate>Mon, 01 Feb 2016 18:23:14 +0600</pubDate>
       
-      <guid>http://example.org/vesna/new-path/</guid>
+      <guid>https://noskov.dev/vesna/new-path/</guid>
       <description>С чего всё начиналось Я пришёл в веб-программирование 10 лет назад голодным студентом, и сразу &amp;ldquo;по-программистки&amp;rdquo; влюбился в эту область. Ведь здесь было целое поле огромных возможностей для развития и множество мелких побед. Здесь я чувствовал себя &amp;ldquo;победителем&amp;rdquo;, а программисту это весьма важно.
  смог заставить это работать в IE6 смог подключить плагин JQuery заставил эту картинку двигаться написал свою CMS, и доволен этим переписал свою CMS, потому что старая была ужасна.</description>
     </item>

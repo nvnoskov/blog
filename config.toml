@@ -1,4 +1,18 @@
 baseURL = "https://noskov.dev/"
 languageCode = "en-us"
 title = "My New Hugo Site"
-theme = "cactus-plus"
+theme = "blog"
+DefaultContentLanguage = "en"
+copyright = "Everything is mine"
+
+[languages]
+  [languages.en]
+    title = "My blog"
+    weight = 1
+    [languages.en.params]
+      linkedin = "https://linkedin.com/in/nvnoskov"
+  [languages.ru]
+    title = "Блог"
+    weight = 2
+    [languages.ru.params]
+      linkedin = "https://linkedin.com/in/nvnoskov"
